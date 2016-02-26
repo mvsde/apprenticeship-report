@@ -1,0 +1,23 @@
+{
+  "apprentice": {
+    "name": "Max",
+    "surname": "Mustermann",
+    "birthplace": "Musterstadt",
+    "birthdate": "1998-02-26T00:00:00.000Z",
+    "address": {
+      "street": "Musterstraße 1a",
+      "city": "Musterstadt"
+    },
+    "job": "Musterjob",
+    "company": "Musterfirma",
+    "division": "Musterabteilung",
+    "period": {
+      "start": "2014-08-01T00:00:00.000Z",
+      "end": "2017-07-31T00:00:00.000Z"
+    },
+    "contract": {
+      "signing": "2014-04-13T00:00:00.000Z",
+      "registration": "2014-04-22T00:00:00.000Z"
+    }
+  }
+}
