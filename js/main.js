@@ -10,5 +10,9 @@ function loadFile(event) {
   reader.readAsText(event.target.files[0]);
 }
 
+function createFile(event) {
+  
+}
+
 document.getElementById('file-config').addEventListener('change', loadFile, false);
 document.getElementById('file-database').addEventListener('change', loadFile, false);

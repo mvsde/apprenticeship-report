@@ -1,0 +1,19 @@
+{
+  "name": "apprenticeship-report",
+  "version": "0.0.1",
+  "description": "Apprenticeship report framework based on HTML, CSS, JavaScript and JSON.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvsde/apprenticeship-report.git"
+  },
+  "author": "Fynn Becker <info@fynn-becker.de>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/mvsde/apprenticeship-report/issues"
+  },
+  "homepage": "https://github.com/mvsde/apprenticeship-report#readme"
+}
