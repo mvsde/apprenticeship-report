@@ -1,2 +1,3 @@
-# apprenticeship-report
+# Apprenticeship Report
 Apprenticeship report framework based on HTML, CSS, JavaScript and JSON.
+Because [this](https://www.hk24.de/aus_und_weiterbildung/ausbildungsberatung/tipps_zur_ausbildung/ausbildungsnachweise/1154076) just doesn't work...
