@@ -1,0 +1,23 @@
+{
+  "entries":
+  [
+    {
+      "id": 1,
+      "week":
+      {
+        "start": "2016-02-22T00:00:00.000Z",
+        "end": "2016-02-26T00:00:00.000Z"
+      },
+      "work": [
+        {
+          "tasks": ["Kaffee kochen", "JSON lernen"],
+          "hours": [4, 4]
+        },
+        {
+          "tasks": ["Another day another Coffee"],
+          "hours": [4]
+        }
+      ]
+    }
+  ]
+}

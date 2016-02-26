@@ -1,5 +1,11 @@
 {
-  "apprentice": {
+  "general":
+  {
+    "title": "Appprenticeship Report",
+    "subtitle": "Proof of Apprenticeship, Daily Report"
+  },
+  "apprentice":
+  {
     "name": "Max",
     "surname": "Mustermann",
     "birthplace": "Musterstadt",
@@ -10,12 +16,14 @@
     },
     "job": "Musterjob",
     "company": "Musterfirma",
-    "division": "Musterabteilung",
-    "period": {
+    "division": "Musterzweig",
+    "period":
+    {
       "start": "2014-08-01T00:00:00.000Z",
       "end": "2017-07-31T00:00:00.000Z"
     },
-    "contract": {
+    "contract":
+    {
       "signing": "2014-04-13T00:00:00.000Z",
       "registration": "2014-04-22T00:00:00.000Z"
     }
