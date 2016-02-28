@@ -12,9 +12,13 @@
     </header>
 
     <section class="settings">
-      <label>Title
-        <input type="text" id="title">
-      </label>
+      <form class="settings-form" action="/save-settings" method="post">
+        <label>Title
+          <input type="text" id="title" name="title">
+        </label>
+
+        <button>Senden</button>
+      </form>
     </section>
 
     <section class="new-entry">
