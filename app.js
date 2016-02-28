@@ -2,6 +2,7 @@
 const fs         = require('fs');
 const express    = require('express');
 const bodyParser = require('body-parser');
+const jsdom      = require('jsdom');
 const open       = require('open');
 
 
@@ -29,19 +30,45 @@ app.use(express.static(__dirname + '/app'));
 
 
 // Handle HTML file delivery
-app.get('/:name', function(req, res) {
-  var options = {root: __dirname + '/app'}
+app.get('/:file', function(req, res) {
+  var options = {root: __dirname + '/app'};
 
-  switch (req.params.name) {
+  switch (req.params.file) {
+    // Config
     case "config":
-      res.sendFile('/config.html', options);
+      fs.readFile('./app/config.html', 'utf8', function(error, data) {
+        jsdom.env(data, [], function(errors, window) {
+          for (var key in config) {
+            window.document.querySelector('[name="' + key + '"]').defaultValue = config[key];
+          }
+
+          res.send(window.document.documentElement.outerHTML);
+          window.close();
+        });
+      });
       break;
+
+    // New entry
     case "new":
-      res.sendFile('/new.html', options);
+      fs.readFile('./app/new.html', 'utf8', function(error, data) {
+        jsdom.env(data, [], function(errors, window) {
+          res.send(window.document.documentElement.outerHTML);
+          window.close();
+        });
+      });
       break;
+
+    // Edit entry
     case "edit":
-      res.sendFile('/edit.html', options);
+      fs.readFile('./app/edit.html', 'utf8', function(error, data) {
+        jsdom.env(data, [], function(errors, window) {
+          res.send(window.document.documentElement.outerHTML);
+          window.close();
+        });
+      });
       break;
+
+    // Default page
     default:
       res.sendFile('/index.html', options);
   }
@@ -51,7 +78,7 @@ app.get('/:name', function(req, res) {
 
 
 // Handle config saving
-app.post('/config.html', function(req, res) {
+app.post('/config', function(req, res) {
   console.log('\nConfig submitted.');
 
   for (var key in req.body) {
@@ -64,6 +91,8 @@ app.post('/config.html', function(req, res) {
     if (err) { return console.log(err); }
     console.log('Config saved.');
   });
+
+  res.redirect('/config');
 });
 
 
