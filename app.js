@@ -1,3 +1,5 @@
+'use strict';
+
 // Node Modules
 const fs         = require('fs');
 const express    = require('express');
@@ -75,6 +77,56 @@ app.get('/:file', function(req, res) {
           for (var key in config) {
             window.document.getElementById(key).innerHTML = config[key];
           }
+
+          var entriesHTML = '';
+          const weekDays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
+
+          for (var i = 0, item; item = database.entries[i++];) {
+            var daysHTML = '';
+            var weekHours = 0;
+
+            for (var j = 0, day; day = item.work[j++];) {
+              var hours = day.hours.reduce(function(a, b) { return a + b; });
+              weekHours += hours;
+
+              daysHTML += '<tr>\
+                <td>' + weekDays[j - 1] + '</td>\
+                <td>' + day.tasks.join('<br>') + '</td>\
+                <td>' + day.hours.join('<br>') + '</td>\
+                <td>' + hours + '</td>\
+              </tr>';
+            }
+
+            entriesHTML += '<section class="section section--entry">\
+              <table class="table table--entry">\
+                <thead>\
+                  <tr>\
+                    <th colspan="2">' + item.start + ' bis ' + item.end + '</th>\
+                    <th colspan="2">Nr. ' + i + '</th>\
+                  </tr>\
+                  <tr>\
+                    <th>Tag</th>\
+                    <th>Ausgeführte Arbeiten oder Unterricht</th>\
+                    <th>Std.</th>\
+                    <th>Ges.</th>\
+                  </tr>\
+                </thead>\
+                <tfoot>\
+                  <tr>\
+                    <td colspan="3">Wochenstunden</td>\
+                    <td>' + weekHours + '</td>\
+                  </tr>\
+                </tfoot>\
+                <tbody>' +
+                  daysHTML +
+                '</tbody>\
+              </table>\
+              <p class="signature">Auszubildender <span>Datum und Unterschrift</span></p>\
+              <p class="signature">Ausbilder/-in <span>Datum und Unterschrift</span></p>\
+            </section>';
+          }
+
+          window.document.getElementById('entries').innerHTML = entriesHTML;
 
           res.send(window.document.documentElement.outerHTML);
           window.close();

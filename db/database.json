@@ -1,22 +1,26 @@
 {
-  "entries":
-  [
-    {
-      "week":
-      {
-        "start": "2016-02-22T00:00:00.000Z",
-        "end": "2016-02-26T00:00:00.000Z"
-      },
-      "work": [
-        {
-          "tasks": ["Kaffee kochen", "JSON lernen"],
-          "hours": [4, 4]
-        },
-        {
-          "tasks": ["Another day another Coffee"],
-          "hours": [4]
-        }
-      ]
-    }
-  ]
+	"entries": [{
+		"start": "2016-02-22",
+		"end": "2016-02-26",
+		"work": [{
+			"tasks": ["Monday Task 1", "Monday Task 2"],
+			"hours": [4, 4]
+		}, {
+			"tasks": ["Tuesday Task 1"],
+			"hours": [4]
+		}]
+	}, {
+		"start": "2016-02-29",
+		"end": "2016-03-04",
+		"work": [{
+			"tasks": ["Monday Task 1", "Monday Task 2"],
+			"hours": [4, 4]
+		}, {
+			"tasks": ["Tuesday Task 1", "Tuesday Task 2", "Tuesday Task 3"],
+			"hours": [4, 3, 6]
+		}, {
+      "tasks": ["Wednesday Task 1"],
+			"hours": [4]
+    }]
+	}]
 }
