@@ -23,8 +23,7 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname));
 
-app.post('/save-config', function(req, res) {
-  res.send('Config gespeichert.');
+app.post('/config.html', function(req, res) {
   console.log('\nConfig submitted.');
 
   for (var key in req.body) {
