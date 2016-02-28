@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Einstellungen < Berichtsheft Datenbank</title>
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <header class="header" id="header">
+      <a href="/"><< Zurück zur Startseite</a>
+      <h1 class="header__title">Einstellungen < Berichtsheft Datenbank</h1>
+      <p class="header__subtitle">Allgemeine Einstellungen und Informationen über den Auszubildenden</p>
+    </header>
+
+    <section class="section section--config" id="config">
+      <form class="form form--config" action="/config" method="post">
+        <h2 class="form__title">Allgemeine Einstellungen</h2>
+
+        <label class="form-input">Titel
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="text" name="title" class="form-input__field">
+        </label>
+        <label class="form-input">Untertitel
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="text" name="subtitle" class="form-input__field">
+        </label>
+
+        <h2 class="form__title">Auszubildender</h2>
+
+        <h3>Informationen</h3>
+        <label class="form-input">Vorname
+          <span class="form-input__note">Erscheint auf allen Seiten.</span>
+          <input type="text" name="name" class="form-input__field">
+        </label>
+        <label class="form-input">Nachname
+          <span class="form-input__note">Erscheint auf allen Seiten.</span>
+          <input type="text" name="surname" class="form-input__field">
+        </label>
+
+        <label class="form-input">Geburtsort
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="text" name="birthplace" class="form-input__field">
+        </label>
+        <label class="form-input">Geburtsdatum
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="date" name="birthdate" class="form-input__field">
+        </label>
+
+        <label class="form-input">Straße
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="text" name="street" class="form-input__field">
+        </label>
+        <label class="form-input">PLZ und Ort
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="text" name="city" class="form-input__field">
+        </label>
+
+        <h3>Informationen zum Ausbildungsberuf</h3>
+        <label class="form-input">Ausbildungsberuf
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="text" name="job" class="form-input__field">
+        </label>
+        <label class="form-input">Ausbildungsfirma
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="text" name="company" class="form-input__field">
+        </label>
+        <label class="form-input">Geschäftszweig
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="text" name="division" class="form-input__field">
+        </label>
+
+        <h3>Vertragliche Ausbildungszeit</h3>
+        <label class="form-input">Beginn
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="date" name="start" class="form-input__field">
+        </label>
+        <label class="form-input">Ende
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="date" name="end" class="form-input__field">
+        </label>
+
+        <h3>Informationen zum Ausbildungsvertrag</h3>
+        <label class="form-input">Vertrag abgeschlossen
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="date" name="signing" class="form-input__field">
+        </label>
+        <label class="form-input">Eingetragen in das Verzeichnis der Berufsausbildungsverhältnisse der IHK
+          <span class="form-input__note">Erscheint auf der Titelseite.</span>
+          <input type="date" name="registration" class="form-input__field">
+        </label>
+
+        <button class="button">Senden</button>
+      </form>
+    </section>
+  </body>
+</html>
