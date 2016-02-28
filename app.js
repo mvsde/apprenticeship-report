@@ -68,6 +68,20 @@ app.get('/:file', function(req, res) {
       });
       break;
 
+    // Print report
+    case "print":
+      fs.readFile('./app/print.html', 'utf8', function(error, data) {
+        jsdom.env(data, [], function(errors, window) {
+          for (var key in config) {
+            window.document.getElementById(key).innerHTML = config[key];
+          }
+
+          res.send(window.document.documentElement.outerHTML);
+          window.close();
+        });
+      });
+      break;
+
     // Default page
     default:
       res.sendFile('/index.html', options);

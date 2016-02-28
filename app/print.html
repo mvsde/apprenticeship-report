@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0">
-    <title>Berichtsheft Datenbank</title>
+    <title>Berichtsheft drucken < Berichtsheft Datenbank</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
@@ -26,16 +26,55 @@
     <meta name="theme-color" content="#ffffff">
   </head>
   <body>
-    <header class="header">
-      <h1 class="header__title">Berichtsheft Datenbank</h1>
-      <p class="header__subtitle">Einstellungen ändern, neue Einträge erstellen und bestehende bearbeiten</p>
+    <header class="header header--titlepage">
+      <a href="/" class="print-hidden"><< Zurück zur Startseite</a>
+      <h1 class="header__title" id="title">Titel</h1>
+      <p class="header__subtitle" id="subtitle">Untertitel</p>
     </header>
 
-    <section class="section">
-      <a href="/config">Einstellungen</a>
-      <a href="/new">Neuer Eintrag</a>
-      <a href="/edit">Eintrag bearbeiten</a>
-      <a href="/print">Berichtsheft drucken</a>
+    <section class="section section--titlepage">
+      <table>
+        <tr>
+          <td>Name, Vorname</td>
+          <td><span id="surname">Nachname</span>, <span id="name">Vorname</span></td>
+        </tr>
+        <tr>
+          <td>Geburtsort</td>
+          <td id="birthplace">Geburtsort</td>
+        </tr>
+        <tr>
+          <td>Geburtsdatum</td>
+          <td id="birthdate">Geburtsdatum</td>
+        </tr>
+        <tr>
+          <td>Anschrift</td>
+          <td><div id="street">Straße</div><div id="city">PLZ und Ort</div></td>
+        </tr>
+        <tr>
+          <td>Ausbildungsberuf</td>
+          <td id="job">Ausbildungsberuf</td>
+        </tr>
+        <tr>
+          <td>Ausbildungsfirma</td>
+          <td id="company">Ausbildungsfirma</td>
+        </tr>
+        <tr>
+          <td>Geschäftszweig</td>
+          <td id="division">Geschäftszweig</td>
+        </tr>
+        <tr>
+          <td>Vertragliche Ausbildungszeit</td>
+          <td>vom <span id="start">Start</span> bis <span id="end">Ende</span></td>
+        </tr>
+        <tr>
+          <td>Berufsausbildungsvertrag abgeschlossen</td>
+          <td>am <span id="signing">Unterzeichungsdatum</span></td>
+        </tr>
+        <tr>
+          <td>Eingetragen in das Verzeichnis der Berufsaubildungsverhältnisse der IHK</td>
+          <td>am <span id="registration">Eintragungsdatum</span></td>
+        </tr>
+      </table>
     </section>
   </body>
 </html>
