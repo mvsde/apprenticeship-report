@@ -26,14 +26,14 @@
     <meta name="theme-color" content="#ffffff">
   </head>
   <body>
-    <header class="header" id="header">
+    <header class="header">
       <a href="/"><< Zurück zur Startseite</a>
       <h1 class="header__title">Einstellungen < Berichtsheft Datenbank</h1>
       <p class="header__subtitle">Allgemeine Einstellungen und Informationen über den Auszubildenden</p>
     </header>
 
-    <section class="section section--config" id="config">
-      <form class="form form--config" action="/config" method="post">
+    <section class="section">
+      <form class="form" action="/config" method="post">
         <h2 class="form__title">Allgemeine Einstellungen</h2>
 
         <label class="form-input">Titel
@@ -47,7 +47,7 @@
 
         <h2 class="form__title">Auszubildender</h2>
 
-        <h3>Informationen</h3>
+        <h3 class="form__subtitle">Informationen</h3>
         <label class="form-input">Vorname
           <span class="form-input__note">Erscheint auf allen Seiten.</span>
           <input type="text" name="name" class="form-input__field">
@@ -75,7 +75,7 @@
           <input type="text" name="city" class="form-input__field">
         </label>
 
-        <h3>Informationen zum Ausbildungsberuf</h3>
+        <h3 class="form__subtitle">Informationen zum Ausbildungsberuf</h3>
         <label class="form-input">Ausbildungsberuf
           <span class="form-input__note">Erscheint auf der Titelseite.</span>
           <input type="text" name="job" class="form-input__field">
@@ -89,7 +89,7 @@
           <input type="text" name="division" class="form-input__field">
         </label>
 
-        <h3>Vertragliche Ausbildungszeit</h3>
+        <h3 class="form__subtitle">Vertragliche Ausbildungszeit</h3>
         <label class="form-input">Beginn
           <span class="form-input__note">Erscheint auf der Titelseite.</span>
           <input type="date" name="start" class="form-input__field">
@@ -99,7 +99,7 @@
           <input type="date" name="end" class="form-input__field">
         </label>
 
-        <h3>Informationen zum Ausbildungsvertrag</h3>
+        <h3 class="form__subtitle">Informationen zum Ausbildungsvertrag</h3>
         <label class="form-input">Vertrag abgeschlossen
           <span class="form-input__note">Erscheint auf der Titelseite.</span>
           <input type="date" name="signing" class="form-input__field">
