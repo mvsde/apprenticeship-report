@@ -2,19 +2,19 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Berichtsheft Datenbank Tool</title>
+    <title>Einstellungen < Berichtsheft Datenbank</title>
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
     <header class="header" id="header">
-      <h1 class="header__title">Berichtsheft Datenbank Tool</h1>
-      <p class="header__subtitle">Einstellungen ändernn, neue Einträge erstellen und bestehende bearbeiten</p>
+      <h1 class="header__title">Einstellungen < Berichtsheft Datenbank</h1>
+      <p class="header__subtitle">Allgemeine Einstellungen und Informationen über den Auszubildenden</p>
     </header>
 
-    <section class="section section--settings" id="settings">
+    <section class="section section--config" id="config">
       <h2 class="section__title">Einstellungen</h2>
 
-      <form class="form form--settings" action="/save-settings" method="post">
+      <form class="form form--config" action="/save-config" method="post">
         <h3 class="form__title">Allgemeine Einstellungen</h3>
 
         <label class="form-input">Titel
@@ -48,10 +48,6 @@
 
         <button class="button">Senden</button>
       </form>
-    </section>
-
-    <section class="section section--new-entry" id="new-entry">
-
     </section>
   </body>
 </html>

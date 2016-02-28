@@ -1,32 +1,17 @@
 {
-  "settings":
-  {
-    "title": "Appprenticeship Report",
-    "subtitle": "Proof of Apprenticeship, Daily Report"
-  },
-  "apprentice":
-  {
-    "name": "Max",
-    "surname": "Mustermann",
-    "birthplace": "Musterstadt",
-    "birthdate": "1998-02-26",
-    "address":
-    {
-      "street": "Musterstraße 1a",
-      "city": "Musterstadt"
-    },
-    "job": "Musterjob",
-    "company": "Musterfirma",
-    "division": "Musterzweig",
-    "period":
-    {
-      "start": "2014-08-01",
-      "end": "2017-07-31Z"
-    },
-    "contract":
-    {
-      "signing": "2014-04-13",
-      "registration": "2014-04-22"
-    }
-  }
+  "title": "Berichtsheft",
+  "subtitle": "Proof of Apprenticeship, Daily Report",
+  "name": "Max",
+  "surname": "Mustermann",
+  "birthplace": "Musterstadt",
+  "birthdate": "1998-02-26",
+  "street": "Musterstraße 1a",
+  "city": "Musterstadt",
+  "job": "Musterjob",
+  "company": "Musterfirma",
+  "division": "Musterzweig",
+  "start": "2014-08-01",
+  "end": "2017-07-31Z",
+  "signing": "2014-04-13",
+  "registration": "2014-04-22"
 }
