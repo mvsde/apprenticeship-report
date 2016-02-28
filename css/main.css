@@ -4,4 +4,6 @@
 @import url('libraries/normalize.css');
 
 /* Components */
+@import url('components/app.css');
+@import url('components/forms.css');
 @import url('components/titlepage.css');

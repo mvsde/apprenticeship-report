@@ -1,0 +1,10 @@
+/* FORMS.css
+ * ========================================================================== */
+
+.form-input {
+  display: block;
+}
+
+  .form-input__note {
+    display: block;
+  }

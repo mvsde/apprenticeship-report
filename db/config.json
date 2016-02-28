@@ -9,8 +9,9 @@
     "name": "Max",
     "surname": "Mustermann",
     "birthplace": "Musterstadt",
-    "birthdate": "1998-02-26T00:00:00.000Z",
-    "address": {
+    "birthdate": "1998-02-26",
+    "address":
+    {
       "street": "Musterstraße 1a",
       "city": "Musterstadt"
     },
@@ -19,13 +20,13 @@
     "division": "Musterzweig",
     "period":
     {
-      "start": "2014-08-01T00:00:00.000Z",
-      "end": "2017-07-31T00:00:00.000Z"
+      "start": "2014-08-01",
+      "end": "2017-07-31Z"
     },
     "contract":
     {
-      "signing": "2014-04-13T00:00:00.000Z",
-      "registration": "2014-04-22T00:00:00.000Z"
+      "signing": "2014-04-13",
+      "registration": "2014-04-22"
     }
   }
 }
