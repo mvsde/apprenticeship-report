@@ -97,7 +97,7 @@ app.get('/:file', function(req, res) {
               </tr>';
             }
 
-            entriesHTML += '<section class="section section--entry">\
+            entriesHTML += '<section class="section section--entry page-break--none">\
               <table class="table table--entry">\
                 <thead>\
                   <tr>\
@@ -121,8 +121,8 @@ app.get('/:file', function(req, res) {
                   daysHTML +
                 '</tbody>\
               </table>\
-              <p class="signature">Auszubildender <span>Datum und Unterschrift</span></p>\
-              <p class="signature">Ausbilder/-in <span>Datum und Unterschrift</span></p>\
+              <p class="signature">Auszubildender</p>\
+              <p class="signature">Ausbilder/-in</p>\
             </section>';
           }
 

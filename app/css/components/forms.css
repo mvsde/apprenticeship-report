@@ -1,11 +1,118 @@
 /* FORMS.css
  * ========================================================================== */
 
+
+
+/* General */
+
+label {
+  color: #666;
+}
+
+input {
+  max-width: 100%;
+  padding: 0.4em 0;
+  font-family: 'Source Code Pro', monospace;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #000;
+  border: none;
+  border-bottom: 1px solid #666;
+}
+
+  input[type="text"] {
+    width: 100%;
+  }
+
+  input:hover,
+  input:focus {
+    background-color: rgba(0, 0, 0, 0.05);
+    outline: none;
+    border-bottom-width: 2px;
+    margin-bottom: -1px;
+  }
+
+
+
+
+/* Submit / Button */
+
+input[type="submit"],
+button,
+.button {
+  padding: 0.4em 0.8em;
+  font-family: 'Source Code Pro', monospace;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  color: #000;
+  border: 1px solid #666;
+  background: none;
+}
+
+  input[type="submit"]:hover,
+  input[type="submit"]:focus,
+  button:hover,
+  button:focus,
+  .button:hover,
+  .button:focus {
+    color: #000;
+    background-color: rgba(0, 0, 0, 0.05);
+    outline: 1px solid #666;
+  }
+
+  input[type="submit"]:active,
+  button:active,
+  .button:active {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-color: #000;
+    outline-color: #000;
+  }
+
+  button::before,
+  button::after,
+  .button::before,
+  .button::after {
+    display: none;
+  }
+
+
+  .button--inline {
+    display: inline-block;
+  }
+
+  .button-group {
+    margin: 3rem 0;
+  }
+
+    .button-group__right {
+      float: right;
+    }
+
+    .button-group::after {
+      content: '';
+      display: table;
+      line-height: 0;
+      clear: both;
+    }
+
+
+
+
+/* Specific */
+
 .form-input {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 3rem;
+  cursor: pointer;
 }
 
   .form-input__note {
+    margin-left: 0.4em;
+    font-size: 0.84em;
+  }
+
+  .form-input__field {
     display: block;
+    margin-top: 0.8rem;
   }

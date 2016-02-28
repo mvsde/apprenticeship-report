@@ -27,114 +27,66 @@
   </head>
   <body>
     <header class="header header--titlepage">
-      <a href="/" class="print-hidden"><< Zurück zur Startseite</a>
-      <h1 class="header__title" id="title">Titel</h1>
-      <p class="header__subtitle" id="subtitle">Untertitel</p>
+      <div class="button-group print-hidden">
+        <a href="/" class="button button--inline">< Zurück</a>
+
+        <div class="button-group__right">
+          <a href="/config" class="button button--inline">Einstellungen</a>
+          <a href="/new" class="button button--inlne">Neuer Eintrag</a>
+          <a href="/edit" class="button button--inline">Eintrag bearbeiten</a>
+        </div>
+      </div>
+
+      <h1 id="title">Titel</h1>
+      <p class="subtitle" id="subtitle">Untertitel</p>
     </header>
 
-    <section class="section section--titlepage">
+    <section class="section section--titlepage page-break--after">
       <table class="table table--titlepage">
         <tr>
-          <td>Name, Vorname</td>
+          <th>Name, Vorname</th>
           <td><span id="surname">Nachname</span>, <span id="name">Vorname</span></td>
         </tr>
         <tr>
-          <td>Geburtsort</td>
+          <th>Geburtsort</th>
           <td id="birthplace">Geburtsort</td>
         </tr>
         <tr>
-          <td>Geburtsdatum</td>
+          <th>Geburtsdatum</th>
           <td id="birthdate">Geburtsdatum</td>
         </tr>
         <tr>
-          <td>Anschrift</td>
+          <th>Anschrift</th>
           <td><div id="street">Straße</div><div id="city">PLZ und Ort</div></td>
         </tr>
         <tr>
-          <td>Ausbildungsberuf</td>
+          <th>Ausbildungsberuf</th>
           <td id="job">Ausbildungsberuf</td>
         </tr>
         <tr>
-          <td>Ausbildungsfirma</td>
+          <th>Ausbildungsfirma</th>
           <td id="company">Ausbildungsfirma</td>
         </tr>
         <tr>
-          <td>Geschäftszweig</td>
+          <th>Geschäftszweig</th>
           <td id="division">Geschäftszweig</td>
         </tr>
         <tr>
-          <td>Vertragliche Ausbildungszeit</td>
+          <th>Vertragliche Ausbildungszeit</th>
           <td>vom <span id="start">Start</span> bis <span id="end">Ende</span></td>
         </tr>
         <tr>
-          <td>Berufsausbildungsvertrag abgeschlossen</td>
+          <th>Berufsausbildungsvertrag abgeschlossen</th>
           <td>am <span id="signing">Unterzeichungsdatum</span></td>
         </tr>
         <tr>
-          <td>Eingetragen in das Verzeichnis der Berufsaubildungsverhältnisse der IHK</td>
+          <th>Eingetragen in das Verzeichnis der Berufsaubildungsverhältnisse der IHK</th>
           <td>am <span id="registration">Eintragungsdatum</span></td>
         </tr>
       </table>
     </section>
 
     <main id="entries">
-      <section class="section section--entry">
-        <table class="table table--entry">
-          <thead>
-            <tr>
-              <th colspan="2">Datum bis Datum</th>
-              <th colspan="2">Nr. 1</th>
-            </tr>
-            <tr>
-              <th>Tag</th>
-              <th>Ausgeführte Arbeiten oder Unterricht</th>
-              <th>Std.</th>
-              <th>Ges.</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <td colspan="3">Wochenstunden</td>
-              <td>10</td>
-            </tr>
-          </tfoot>
-          <tbody>
-            <tr>
-              <td>Montag</td>
-              <td>Arbeiten</td>
-              <td>8</td>
-              <td>8</td>
-            </tr>
-            <tr>
-              <td>Dienstag</td>
-              <td>Arbeiten</td>
-              <td>8</td>
-              <td>8</td>
-            </tr>
-            <tr>
-              <td>Mittwoch</td>
-              <td>Arbeiten</td>
-              <td>8</td>
-              <td>8</td>
-            </tr>
-            <tr>
-              <td>Donnerstag</td>
-              <td>Arbeiten</td>
-              <td>8</td>
-              <td>8</td>
-            </tr>
-            <tr>
-              <td>Freitag</td>
-              <td>Arbeiten</td>
-              <td>8</td>
-              <td>8</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p class="signature">Auszubildender <span>Datum und Unterschrift</span></p>
-        <p class="signature">Ausbilder/-in <span>Datum und Unterschrift</span></p>
-      </section>
     </main>
   </body>
 </html>

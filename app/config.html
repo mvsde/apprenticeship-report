@@ -27,9 +27,18 @@
   </head>
   <body>
     <header class="header">
-      <a href="/"><< Zurück zur Startseite</a>
-      <h1 class="header__title">Einstellungen < Berichtsheft Datenbank</h1>
-      <p class="header__subtitle">Allgemeine Einstellungen und Informationen über den Auszubildenden</p>
+      <div class="button-group">
+        <a href="/" class="button button--inline">< Zurück</a>
+
+        <div class="button-group__right">
+          <a href="/new" class="button button--inlne">Neuer Eintrag</a>
+          <a href="/edit" class="button button--inline">Eintrag bearbeiten</a>
+          <a href="/print" class="button button--inline">Berichtsheft drucken</a>
+        </div>
+      </div>
+
+      <h1>Einstellungen</h1>
+      <p class="subtitle">Allgemeine Einstellungen und Informationen über den Auszubildenden.</p>
     </header>
 
     <section class="section">
@@ -109,7 +118,7 @@
           <input type="date" name="registration" class="form-input__field">
         </label>
 
-        <button class="button">Senden</button>
+        <button>Speichern</button>
       </form>
     </section>
   </body>

@@ -1,0 +1,93 @@
+/* TABLE.css
+ * ========================================================================== */
+
+
+
+table {
+  width: 100%;
+  font-size: 1rem;
+}
+
+th,
+td {
+  padding: 0.4em 0.8em;
+}
+
+
+
+
+/* Titlepage */
+
+.table--titlepage {
+  width: 80%;
+  margin: 3rem 0;
+}
+
+  .table--titlepage tr {
+    border-bottom: 1px solid #666;
+  }
+
+    .table--titlepage th,
+    .table--titlepage td {
+      vertical-align: top;
+      padding: 0.8em 0 0.4em;
+      text-align: left;
+    }
+
+
+
+
+/* Entry */
+
+.section--entry {
+  margin-bottom: 3.6rem;
+}
+
+.table--entry,
+.table--entry th,
+.table--entry td {
+  border: 1px solid #666;
+  vertical-align: top;
+}
+
+  .table--entry thead {
+    background-color: #ccc;
+  }
+
+  .table--entry tfoot {
+    background-color: #eee;
+  }
+
+    .table--entry tfoot {
+      text-align: right;
+    }
+
+  .table--entry tbody {
+  }
+
+    .table--entry tbody tr td:nth-last-child(1),
+    .table--entry tbody tr td:nth-last-child(2) {
+      text-align: right;
+    }
+
+    .table--entry tbody tr td:nth-last-child(1) {
+      vertical-align: bottom;
+    }
+
+
+.signature {
+  position: relative;
+  width: 100%;
+  margin-top: 2.6rem;
+}
+
+  .signature::after {
+    content: 'Datum und Unterschrift';
+    position: absolute;
+    left: 130px;
+    right: 0;
+    font-weight: 600;
+    font-size: 0.8em;
+    color: #aaa;
+    border-bottom: 1px solid #666;
+  }

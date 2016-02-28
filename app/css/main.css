@@ -3,7 +3,14 @@
 /* Normalize.css */
 @import url('libraries/normalize.css');
 
+/* Font */
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,200,300,500,600,900,700|Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800italic,800);
+
 /* Components */
 @import url('components/app.css');
+@import url('components/entry.css');
 @import url('components/forms.css');
+@import url('components/table.css');
 @import url('components/titlepage.css');
+@import url('components/typography.css');
+@import url('components/utilities.css');
