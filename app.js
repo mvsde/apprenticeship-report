@@ -142,21 +142,30 @@ app.get('/print', function(req, res) {
 
 
 // Handle config saving
-app.post('/config', function(req, res) {
-  console.log('\nConfig submitted.');
+app.post('/config-saved', function(req, res) {
 
+  // Update config JSON
   for (var key in req.body) {
     if (req.body[key]) {
       config[key] = req.body[key];
     }
   }
 
+  // Write file
   fs.writeFile(paths.config, JSON.stringify(config, null, 2), function(err) {
-    if (err) { return console.log(err); }
-    console.log('Config saved.');
-  });
 
-  res.redirect('/config');
+    // Serve success/error page
+    fs.readFile('./app/config-saved.html', 'utf8', function(error, data) {
+      jsdom.env(data, [], function(errors, window) {
+        if (err) {
+          window.document.getElementById('title').innerHTML = 'Einstellungen wurden nicht gespeichert';
+          window.document.getElementById('subtitle').innerHTML = err;
+        }
+        res.send(window.document.documentElement.outerHTML);
+        window.close();
+      });
+    });
+  });
 });
 
 
