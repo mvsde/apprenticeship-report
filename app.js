@@ -174,6 +174,5 @@ app.post('/config-saved', function(req, res) {
 // Start web server and open default browser
 app.listen(0, function() {
   console.log('Server started at http://127.0.0.1:' + this.address().port);
-  console.log('\nOpening default web browser...');
   open('http://127.0.0.1:' + this.address().port);
 });
