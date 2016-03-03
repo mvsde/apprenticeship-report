@@ -17,15 +17,14 @@ input {
   font-size: 1.2rem;
   color: #000;
   border: none;
-  border-bottom: 1px solid #666;
+  box-shadow: 0 1px 0 #666;
 }
 
   input:hover,
   input:focus {
     background-color: rgba(0, 0, 0, 0.05);
     outline: none;
-    border-bottom-width: 2px;
-    margin-bottom: -1px;
+    box-shadow: 0 2px 0 #666;
   }
 
 
@@ -45,6 +44,7 @@ button,
   color: #000;
   border: 1px solid #666;
   background: none;
+  box-shadow: none;
 }
 
   input[type="submit"]:hover,
