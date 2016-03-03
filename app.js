@@ -24,8 +24,8 @@ var database;
 // This way we can later use this function
 // to refresh the variable information
 var loadDatabase = function() {
-  config   = require(paths.config);
-  database = require(paths.database).entries;
+  config   = JSON.parse(fs.readFileSync(paths.config));
+  database = JSON.parse(fs.readFileSync(paths.database)).entries;
 };
 
 // Initial database loading
