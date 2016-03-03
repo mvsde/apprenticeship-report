@@ -40,5 +40,43 @@
       <h1>Eintrag erstellen</h1>
       <p class="subtitle">Einen neuen Eintrag erstellen.</p>
     </header>
+
+    <section class="section">
+      <form class="form" action="/entry-saved" method="post">
+
+        <h2 class="form__title">Datum</h2>
+
+        <div class="form-group">
+          <label class="form-input form-group__item form-group__item--20">Wochenstart
+            <input type="date" name="start" class="form-input__field">
+          </label>
+          <label class="form-input form-group__item form-group__item--20">Wochenende
+            <input type="date" name="end" class="form-input__field">
+          </label>
+        </div>
+
+        <h2 class="form__title">Arbeiten</h2>
+
+        <div class="form-group">
+          <label class="form-input form-group__item form-group__item--80">Beschreibung
+            <input type="text" name="work" class="form-input__field">
+          </label>
+          <label class="form-input form-group__item form-group__item--20">Zeit
+            <input type="number" step="0.25" name="time" class="form-input__field">
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-input form-group__item form-group__item--80">Beschreibung
+            <input type="text" name="work" class="form-input__field">
+          </label>
+          <label class="form-input form-group__item form-group__item--20">Zeit
+            <input type="number" step="0.25" name="time" class="form-input__field">
+          </label>
+        </div>
+
+        <input type="submit" value="Speichern">
+      </form>
+    </section>
   </body>
 </html>

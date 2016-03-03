@@ -10,7 +10,7 @@ label {
 }
 
 input {
-  max-width: 100%;
+  width: 100%;
   padding: 0.4em 0;
   font-family: 'Source Code Pro', monospace;
   font-weight: 600;
@@ -19,10 +19,6 @@ input {
   border: none;
   border-bottom: 1px solid #666;
 }
-
-  input[type="text"] {
-    width: 100%;
-  }
 
   input:hover,
   input:focus {
@@ -40,6 +36,7 @@ input {
 input[type="submit"],
 button,
 .button {
+  width: auto;
   padding: 0.4em 0.8em;
   font-family: 'Source Code Pro', monospace;
   font-weight: 600;
@@ -115,4 +112,37 @@ button,
   .form-input__field {
     display: block;
     margin-top: 0.8rem;
+  }
+
+
+
+
+/* Form group */
+
+.form-group {
+  display: flex;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+  .form-group__item {
+    flex: 0 1 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .form-group__item--20 {
+    flex-basis: 20%;
+  }
+
+  .form-group__item--30 {
+    flex-basis: 30%;
+  }
+
+  .form-group__item--50 {
+    flex-basis: 50%;
+  }
+
+  .form-group__item--80 {
+    flex-basis: 80%;
   }
