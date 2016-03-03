@@ -1,18 +1,17 @@
-function loadFile(event) {
-  var reader = new FileReader();
+// ADD WORK ROW
+// =============================================================================
 
-  function processFile(event) {
-    var fileContent = JSON.parse(event.target.result);
-    console.log(fileContent);
-  }
 
-  reader.onload = processFile;
-  reader.readAsText(event.target.files[0]);
-}
+;(function() {
+  // Cache DOM elements
+  const formGroup     = document.querySelector('.form-work');
+  const formGroupWork = document.querySelector('.form-work__input-group');
 
-function createFile(event) {
-  
-}
+  // Add event listener to + button
+  document.getElementById('form-work__button').addEventListener('click', function(event) {
+    event.preventDefault();
 
-document.getElementById('file-config').addEventListener('change', loadFile, false);
-document.getElementById('file-database').addEventListener('change', loadFile, false);
+    // Append a clone of fromGroupWork to formGroup
+    formGroup.appendChild(formGroupWork.cloneNode(true));
+  });
+})();
