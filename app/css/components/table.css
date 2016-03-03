@@ -19,8 +19,7 @@ td {
 /* Titlepage */
 
 .table--titlepage {
-  width: 80%;
-  margin: 3rem 0;
+  margin: 4rem 0;
 }
 
   .table--titlepage tr {
@@ -40,8 +39,23 @@ td {
 /* Entry */
 
 .section--entry {
-  margin-bottom: 3.6rem;
+  position: relative;
+  margin-bottom: 4rem;
 }
+
+.button--edit-entry {
+  position: absolute;
+  top: -3rem;
+  right: 0;
+  padding: 0.4em;
+}
+
+  @media (min-width: 1300px) {
+    .button--edit-entry {
+      top: 0;
+      right: -3rem;
+    }
+  }
 
 .table--entry,
 .table--entry th,

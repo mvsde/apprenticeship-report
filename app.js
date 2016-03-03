@@ -193,30 +193,33 @@ app.get('/print', function(req, res) {
       var entriesHTML = '';
 
       // Iterate through all entries
-      for (var i = 0, item; item = database[i++];) {
+      for (var i = 0; i < database.length; i++) {
         var daysHTML = '';
         var weekHours = 0;
 
         // Create the HTML for the daily tasks
-        for (var j = 0, day; day = item.work[j++];) {
-          var hours = day.hours.reduce(function(a, b) { return a + b; });
+        for (var j = 0; j < database[i].work.length; j++) {
+          var hours = database[i].work[j].hours.reduce(function(a, b) { return a + b; });
           weekHours += hours;
 
           daysHTML += '<tr>\
-            <td>' + weekDays[j - 1] + '</td>\
-            <td>' + day.tasks.join('<br>') + '</td>\
-            <td>' + day.hours.join('<br>') + '</td>\
+            <td>' + weekDays[j] + '</td>\
+            <td>' + database[i].work[j].tasks.join('<br>') + '</td>\
+            <td>' + database[i].work[j].hours.join('<br>') + '</td>\
             <td>' + hours + '</td>\
           </tr>';
         }
 
         // Create the HTML frame for the whole empty
         entriesHTML += '<section class="section section--entry page-break--none">\
+          <a href="edit?=' + i + '" class="button button--edit-entry print-hidden">\
+            <span class="icon icon--edit"></span>\
+          </a>\
           <table class="table table--entry">\
             <thead>\
               <tr>\
-                <th colspan="2">' + item.start + ' bis ' + item.end + '</th>\
-                <th colspan="2">Nr. ' + i + '</th>\
+                <th colspan="2">' + database[i].start + ' bis ' + database[i].end + '</th>\
+                <th colspan="2">Nr. ' + (i + 1) + '</th>\
               </tr>\
               <tr>\
                 <th>Tag</th>\

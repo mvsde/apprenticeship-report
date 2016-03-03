@@ -22,3 +22,7 @@
 .icon--app {
   background-image: url('../icons/app.svg');
 }
+
+.icon--edit {
+  background-image: url('../icons/edit.svg');
+}
