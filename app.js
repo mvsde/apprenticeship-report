@@ -16,9 +16,17 @@ const paths = {
   database: './db/database.json'
 }
 
-// Load config and database
+// Load database
 var config   = require(paths.config);
 var database = require(paths.database);
+
+// Wrap database loading into a function
+// This way we can later use this function
+// to refresh the variable information
+var loadDatabase = function() {
+  config   = require(paths.config);
+  database = require(paths.database);
+};
 
 
 
@@ -33,13 +41,24 @@ app.use(express.static(__dirname + '/app'));
 
 // Serve config page
 app.get('/config', function(req, res) {
+  // Refresh database
+  loadDatabase();
+
+  // Get HTML file from local disk
   fs.readFile('./app/config.html', 'utf8', function(error, data) {
+
+    // Modify the file with jsdom
     jsdom.env(data, [], function(errors, window) {
+
+      // Inject settings as default input values
       for (var key in config) {
         window.document.querySelector('[name="' + key + '"]').defaultValue = config[key];
       }
 
+      // Send the modified HTML file to the user
       res.send(window.document.documentElement.outerHTML);
+
+      // Close the jsdom window
       window.close();
     });
   });
@@ -50,9 +69,19 @@ app.get('/config', function(req, res) {
 
 // Serve new entry page
 app.get('/new', function(req, res) {
+  // Refresh database
+  loadDatabase();
+
+  // Get HTML file from local disk
   fs.readFile('./app/new.html', 'utf8', function(error, data) {
+
+    // Modify the file with jsdom
     jsdom.env(data, [], function(errors, window) {
+
+      // Send the modified HTML file to the user
       res.send(window.document.documentElement.outerHTML);
+
+      // Close the jsdom window
       window.close();
     });
   });
@@ -63,9 +92,19 @@ app.get('/new', function(req, res) {
 
 // Serve edit entry page
 app.get('/edit', function(req, res) {
+  // Refresh database
+  loadDatabase();
+
+  // Get HTML file from local disk
   fs.readFile('./app/edit.html', 'utf8', function(error, data) {
+
+    // Modify the file with jsdom
     jsdom.env(data, [], function(errors, window) {
+
+      // Send the modified HTML file to the user
       res.send(window.document.documentElement.outerHTML);
+
+      // Close the jsdom window
       window.close();
     });
   });
@@ -76,19 +115,32 @@ app.get('/edit', function(req, res) {
 
 // Serve print page
 app.get('/print', function(req, res) {
+  // Refresh database
+  loadDatabase();
+
+  // Get HTML file from local disk
   fs.readFile('./app/print.html', 'utf8', function(error, data) {
+
+    // Modify the file with jsdom
     jsdom.env(data, [], function(errors, window) {
+
+      // Print config information
       for (var key in config) {
         window.document.getElementById(key).innerHTML = config[key];
       }
 
-      var entriesHTML = '';
+      // TODO: Provide localization file
       const weekDays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
 
+      // This variable holds all the entry HTML
+      var entriesHTML = '';
+
+      // Iterate through all entries
       for (var i = 0, item; item = database.entries[i++];) {
         var daysHTML = '';
         var weekHours = 0;
 
+        // Create the HTML for the daily tasks
         for (var j = 0, day; day = item.work[j++];) {
           var hours = day.hours.reduce(function(a, b) { return a + b; });
           weekHours += hours;
@@ -101,6 +153,7 @@ app.get('/print', function(req, res) {
           </tr>';
         }
 
+        // Create the HTML frame for the whole empty
         entriesHTML += '<section class="section section--entry page-break--none">\
           <table class="table table--entry">\
             <thead>\
@@ -130,9 +183,13 @@ app.get('/print', function(req, res) {
         </section>';
       }
 
+      // Inject the HTML of all entries into the document
       window.document.getElementById('entries').innerHTML = entriesHTML;
 
+      // Send the modified HTML file to the user
       res.send(window.document.documentElement.outerHTML);
+
+      // Close the jsdom window
       window.close();
     });
   });
@@ -151,17 +208,25 @@ app.post('/config-saved', function(req, res) {
     }
   }
 
-  // Write file
+  // Write JSON config file to disk
   fs.writeFile(paths.config, JSON.stringify(config, null, 2), function(err) {
 
-    // Serve success/error page
+    // Get success/error HTML file from disk
     fs.readFile('./app/config-saved.html', 'utf8', function(error, data) {
+
+      // Modify the file with jsdom
       jsdom.env(data, [], function(errors, window) {
+
+        // If we have an error message inject it into the HTML
         if (err) {
           window.document.getElementById('title').innerHTML = 'Einstellungen wurden nicht gespeichert';
           window.document.getElementById('subtitle').innerHTML = err;
         }
+
+        // Send the modified HTML file to the user
         res.send(window.document.documentElement.outerHTML);
+
+        // Close the jsdom window
         window.close();
       });
     });
@@ -174,5 +239,8 @@ app.post('/config-saved', function(req, res) {
 // Start web server and open default browser
 app.listen(0, function() {
   console.log('Server started at http://127.0.0.1:' + this.address().port);
+
+  // Open default web browser
+  // TODO: Create an entire application out of this
   open('http://127.0.0.1:' + this.address().port);
 });
