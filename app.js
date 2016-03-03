@@ -16,17 +16,20 @@ const paths = {
   database: './db/database.json'
 }
 
-// Load database
-var config   = require(paths.config);
-var database = require(paths.database);
+// Create database variables
+var config;
+var database;
 
 // Wrap database loading into a function
 // This way we can later use this function
 // to refresh the variable information
 var loadDatabase = function() {
   config   = require(paths.config);
-  database = require(paths.database);
+  database = require(paths.database).entries;
 };
+
+// Initial database loading
+loadDatabase();
 
 
 
@@ -118,6 +121,14 @@ app.get('/print', function(req, res) {
   // Refresh database
   loadDatabase();
 
+  // Sort database by week
+  database.sort(function(a, b) {
+    var dateA = new Date(a.start);
+    var dateB = new Date(b.start);
+
+    return dateA - dateB;
+  });
+
   // Get HTML file from local disk
   fs.readFile('./app/print.html', 'utf8', function(error, data) {
 
@@ -136,7 +147,7 @@ app.get('/print', function(req, res) {
       var entriesHTML = '';
 
       // Iterate through all entries
-      for (var i = 0, item; item = database.entries[i++];) {
+      for (var i = 0, item; item = database[i++];) {
         var daysHTML = '';
         var weekHours = 0;
 

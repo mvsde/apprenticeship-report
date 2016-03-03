@@ -9,6 +9,17 @@
 			"tasks": ["Tuesday Task 1"],
 			"hours": [4]
 		}]
+	},
+	{
+		"start": "2016-01-18",
+		"end": "2016-01-22",
+		"work": [{
+			"tasks": ["Monday Task 1"],
+			"hours": [4]
+		}, {
+			"tasks": ["Tuesday Task 1"],
+			"hours": [4]
+		}]
 	}, {
 		"start": "2016-02-29",
 		"end": "2016-03-04",
