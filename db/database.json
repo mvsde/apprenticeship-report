@@ -33,5 +33,18 @@
       "tasks": ["Wednesday Task 1"],
 			"hours": [4]
     }]
+	}, {
+		"start": "2015-02-29",
+		"end": "2015-03-04",
+		"work": [{
+			"tasks": ["Monday Task 1", "Monday Task 2"],
+			"hours": [4, 4]
+		}, {
+			"tasks": ["Tuesday Task 1", "Tuesday Task 2", "Tuesday Task 3"],
+			"hours": [4, 3, 6]
+		}, {
+      "tasks": ["Wednesday Task 1"],
+			"hours": [4]
+    }]
 	}]
 }
