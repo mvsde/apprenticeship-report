@@ -257,9 +257,9 @@ app.get('/print', function(req, res) {
 
 // Start web server and open default browser
 app.listen(0, function() {
-  console.log('Server started at http://127.0.0.1:' + this.address().port);
+  console.log('Server started at http://localhost:' + this.address().port);
 
   // Open default web browser
   // TODO: Create an entire application out of this
-  open('http://127.0.0.1:' + this.address().port);
+  open('http://localhost:' + this.address().port);
 });
