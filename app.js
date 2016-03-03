@@ -70,16 +70,59 @@ app.get('/config', function(req, res) {
 
 
 
+// Handle config saving
+app.post('/config-saved', function(req, res) {
+
+  // Update config JSON
+  for (var key in req.body) {
+    if (req.body[key]) {
+      config[key] = req.body[key];
+    }
+  }
+
+  // Write JSON config file to disk
+  fs.writeFile(paths.config, JSON.stringify(config, null, 2), function(err) {
+
+    // Get success/error HTML file from disk
+    fs.readFile('./app/config-saved.html', 'utf8', function(error, data) {
+
+      // Modify the file with jsdom
+      jsdom.env(data, [], function(errors, window) {
+
+        // If we have an error message inject it into the HTML
+        if (err) {
+          window.document.getElementById('title').innerHTML = 'Einstellungen wurden nicht gespeichert';
+          window.document.getElementById('subtitle').innerHTML = err;
+        }
+
+        // Send the modified HTML file to the user
+        res.send(window.document.documentElement.outerHTML);
+
+        // Close the jsdom window
+        window.close();
+      });
+    });
+  });
+});
+
+
+
+
 // Serve new entry page
 app.get('/new', function(req, res) {
   // Refresh database
   loadDatabase();
 
   // Get HTML file from local disk
-  fs.readFile('./app/new.html', 'utf8', function(error, data) {
+  fs.readFile('./app/entry.html', 'utf8', function(error, data) {
 
     // Modify the file with jsdom
     jsdom.env(data, [], function(errors, window) {
+
+      window.document.getElementById('title').innerHTML = 'Eintrag erstellen';
+      window.document.getElementById('subtitle').innerHTML = 'Einen neuen Eintrag erstellen.';
+
+      window.document.getElementById('menu').removeChild(window.document.getElementById('menu-new'));
 
       // Send the modified HTML file to the user
       res.send(window.document.documentElement.outerHTML);
@@ -99,10 +142,13 @@ app.get('/edit', function(req, res) {
   loadDatabase();
 
   // Get HTML file from local disk
-  fs.readFile('./app/edit.html', 'utf8', function(error, data) {
+  fs.readFile('./app/entry.html', 'utf8', function(error, data) {
 
     // Modify the file with jsdom
     jsdom.env(data, [], function(errors, window) {
+
+      window.document.getElementById('title').innerHTML = 'Eintrag bearbeiten';
+      window.document.getElementById('subtitle').innerHTML = 'Einen bestehenden Eintrag bearbeiten.';
 
       // Send the modified HTML file to the user
       res.send(window.document.documentElement.outerHTML);
@@ -202,44 +248,6 @@ app.get('/print', function(req, res) {
 
       // Close the jsdom window
       window.close();
-    });
-  });
-});
-
-
-
-
-// Handle config saving
-app.post('/config-saved', function(req, res) {
-
-  // Update config JSON
-  for (var key in req.body) {
-    if (req.body[key]) {
-      config[key] = req.body[key];
-    }
-  }
-
-  // Write JSON config file to disk
-  fs.writeFile(paths.config, JSON.stringify(config, null, 2), function(err) {
-
-    // Get success/error HTML file from disk
-    fs.readFile('./app/config-saved.html', 'utf8', function(error, data) {
-
-      // Modify the file with jsdom
-      jsdom.env(data, [], function(errors, window) {
-
-        // If we have an error message inject it into the HTML
-        if (err) {
-          window.document.getElementById('title').innerHTML = 'Einstellungen wurden nicht gespeichert';
-          window.document.getElementById('subtitle').innerHTML = err;
-        }
-
-        // Send the modified HTML file to the user
-        res.send(window.document.documentElement.outerHTML);
-
-        // Close the jsdom window
-        window.close();
-      });
     });
   });
 });
