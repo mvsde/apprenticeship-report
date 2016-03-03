@@ -96,7 +96,7 @@ button,
 
 
 
-/* Specific */
+/* Form Input */
 
 .form-input {
   display: block;
@@ -120,7 +120,7 @@ button,
 
 
 
-/* Form group */
+/* Form Group */
 
 @media (min-width: 990px) {
   .form-group {
@@ -152,3 +152,25 @@ button,
       flex-basis: 80%;
     }
 }
+
+
+
+
+/* Form Work */
+
+.form-work {
+  position: relative;
+}
+
+  .form-work__button {
+    position: absolute;
+    bottom: -3rem;
+    right: 0;
+  }
+
+  @media (min-width: 1300px) {
+    .form-work__button {
+      bottom: 3rem;
+      right: -4rem;
+    }
+  }

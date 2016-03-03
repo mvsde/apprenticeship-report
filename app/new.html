@@ -58,16 +58,18 @@
         <h2 class="form__title">Arbeiten</h2>
 
         <div class="form-work">
-          <button class="form-work__button" id="form-work__button">+</button>
-
-          <div class="form-group form-work__input-group">
-            <label class="form-input form-group__item form-group__item--80">Beschreibung
-              <input type="text" name="work" class="form-input__field">
-            </label>
-            <label class="form-input form-group__item form-group__item--20">Zeit
-              <input type="number" step="0.25" name="time" class="form-input__field">
-            </label>
+          <div class="form-work__group">
+            <div class="form-group form-work__input">
+              <label class="form-input form-group__item form-group__item--80">Beschreibung
+                <input type="text" name="work" class="form-input__field">
+              </label>
+              <label class="form-input form-group__item form-group__item--20">Zeit
+                <input type="number" step="0.25" name="time" class="form-input__field">
+              </label>
+            </div>
           </div>
+
+          <button class="form-work__button" id="form-work__button">+</button>
         </div>
 
         <input type="submit" value="Speichern">
