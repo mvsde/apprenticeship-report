@@ -4,7 +4,7 @@
 const fs         = require('fs');
 const express    = require('express');
 const bodyParser = require('body-parser');
-const jsdom      = require('jsdom');
+const jsdom      = require('jsdom').jsdom;
 const open       = require('open');
 
 
@@ -15,7 +15,8 @@ const open       = require('open');
 
 const paths = {
   config:   './db/config.json',
-  database: './db/database.json'
+  database: './db/database.json',
+  html:     './html/'
 }
 
 // Array of weekdays
@@ -47,12 +48,44 @@ loadDatabase();
 
 
 
+// PAGE TEMPLATE
+// =============================================================================
+
+function pageTemplate(title, subtitle, content, back) {
+  // Load template from disk
+  var htmlFile = fs.readFileSync(paths.html + 'scaffolding.html', 'utf-8');
+  var document = jsdom(htmlFile).defaultView.document;
+
+  // Inject dynamic content
+  document.title = 'Berichtsheftdatenbank | ' + title;
+  document.getElementById('title').innerHTML = title;
+  document.getElementById('subtitle').innerHTML = subtitle;
+  document.getElementById('content').innerHTML = content;
+  document.getElementById('back').href = back;
+
+  // Return HTML
+  return document.documentElement.outerHTML;
+}
+
+
+
+
 // LOAD EXPRESS
 // =============================================================================
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/app'));
+
+
+
+
+// INDEX PAGE
+// =============================================================================
+
+app.get('/', function(req, res) {
+  res.sendFile(__dirname + '/html/index.html');
+});
 
 
 
@@ -64,24 +97,27 @@ app.get('/config', function(req, res) {
   // Refresh database
   loadDatabase();
 
-  // Get HTML file from local disk
-  fs.readFile('./app/config.html', 'utf8', function(error, data) {
+  // Create page content
+  var pageContent = function() {
+    // Load template from disk
+    var htmlFile = fs.readFileSync(paths.html + 'config.html', 'utf-8');
+    var document = jsdom(htmlFile).defaultView.document;
 
-    // Modify the file with jsdom
-    jsdom.env(data, [], function(errors, window) {
+    // Inject settings as default input values
+    for (var key in config) {
+      document.querySelector('[name="' + key + '"]').defaultValue = config[key];
+    }
 
-      // Inject settings as default input values
-      for (var key in config) {
-        window.document.querySelector('[name="' + key + '"]').defaultValue = config[key];
-      }
+    return document.documentElement.outerHTML;
+  };
 
-      // Send the modified HTML file to the user
-      res.send(window.document.documentElement.outerHTML);
-
-      // Close the jsdom window
-      window.close();
-    });
-  });
+  // Send HTML file
+  res.send(pageTemplate(
+    'Einstellungen',
+    'Allgemeine Einstellungen und Informationen über den Auszubildenden.',
+    pageContent(),
+    '/')
+  );
 });
 
 
@@ -102,25 +138,24 @@ app.post('/config-saved', function(req, res) {
   // Write JSON config file to disk
   fs.writeFile(paths.config, JSON.stringify(config, null, 2), function(err) {
 
-    // Get success/error HTML file from disk
-    fs.readFile('./app/config-saved.html', 'utf8', function(error, data) {
+    // Output error if there is one
+    if (err) {
+      res.send(pageTemplate(
+        'Fehler',
+        'Die Einstellungen konnten nicht gespeichert werden.',
+        err,
+        'javascript:history.back()')
+      );
 
-      // Modify the file with jsdom
-      jsdom.env(data, [], function(errors, window) {
-
-        // If we have an error message inject it into the HTML
-        if (err) {
-          window.document.getElementById('title').innerHTML = 'Einstellungen wurden nicht gespeichert';
-          window.document.getElementById('subtitle').innerHTML = err;
-        }
-
-        // Send the modified HTML file to the user
-        res.send(window.document.documentElement.outerHTML);
-
-        // Close the jsdom window
-        window.close();
-      });
-    });
+    // Output success message
+    } else {
+      res.send(pageTemplate(
+        'Einstellungen gespeichert',
+        'Die Einstellungen wurden erfolgreich gespeichert.',
+        '',
+        '/config')
+      );
+    }
   });
 });
 
@@ -192,29 +227,25 @@ app.get('/new', function(req, res) {
   // Refresh database
   loadDatabase();
 
-  // Get HTML file from local disk
-  fs.readFile('./app/entry.html', 'utf8', function(error, data) {
+  // Create page content
+  var pageContent = function() {
+    // Load template from disk
+    var htmlFile = fs.readFileSync(paths.html + 'entry.html', 'utf-8');
+    var document = jsdom(htmlFile).defaultView.document;
 
-    // Modify the file with jsdom
-    jsdom.env(data, [], function(errors, window) {
+    // Inject the weekdays form HTML
+    document.getElementById('weekdays').innerHTML = createWeekdaysHTML();
 
-      // Inject the correct title and subtitle
-      window.document.getElementById('title').innerHTML = 'Eintrag erstellen';
-      window.document.getElementById('subtitle').innerHTML = 'Einen neuen Eintrag erstellen.';
+    return document.documentElement.outerHTML;
+  };
 
-      // Remove the menu entry
-      window.document.getElementById('menu').removeChild(window.document.getElementById('menu-new'));
-
-      // Inject the weekdays form HTML
-      window.document.getElementById('weekdays').innerHTML = createWeekdaysHTML();
-
-      // Send the modified HTML file to the user
-      res.send(window.document.documentElement.outerHTML);
-
-      // Close the jsdom window
-      window.close();
-    });
-  });
+  // Send HTML file
+  res.send(pageTemplate(
+    'Eintrag erstellen',
+    'Einen neuen Eintrag erstellen.',
+    pageContent(),
+    '/')
+  );
 });
 
 
@@ -227,32 +258,32 @@ app.get('/edit', function(req, res) {
   // Refresh database
   loadDatabase();
 
+  // Load entry from database
   var entry = database[req.query.entry];
 
-  // Get HTML file from local disk
-  fs.readFile('./app/entry.html', 'utf8', function(error, data) {
+  // Create page content
+  var pageContent = function() {
+    // Load template from disk
+    var htmlFile = fs.readFileSync(paths.html + 'entry.html', 'utf-8');
+    var document = jsdom(htmlFile).defaultView.document;
 
-    // Modify the file with jsdom
-    jsdom.env(data, [], function(errors, window) {
+    // Inject dates
+    document.querySelector('[name="start"]').defaultValue = entry.start;
+    document.querySelector('[name="end"]').defaultValue = entry.end;
 
-      // Inject the correct title and subtitle
-      window.document.getElementById('title').innerHTML = 'Eintrag bearbeiten';
-      window.document.getElementById('subtitle').innerHTML = 'Einen bestehenden Eintrag bearbeiten.';
+    // Inject the weekdays form HTML
+    document.getElementById('weekdays').innerHTML = createWeekdaysHTML(entry.work);
 
-      // Inject dates
-      window.document.querySelector('[name="start"]').defaultValue = entry.start;
-      window.document.querySelector('[name="end"]').defaultValue = entry.end;
+    return document.documentElement.outerHTML;
+  };
 
-      // Inject the weekdays form HTML
-      window.document.getElementById('weekdays').innerHTML = createWeekdaysHTML(entry.work);
-
-      // Send the modified HTML file to the user
-      res.send(window.document.documentElement.outerHTML);
-
-      // Close the jsdom window
-      window.close();
-    });
-  });
+  // Send HTML file
+  res.send(pageTemplate(
+    'Eintrag erstellen',
+    'Einen neuen Eintrag erstellen.',
+    pageContent(),
+    '/')
+  );
 });
 
 
@@ -316,19 +347,21 @@ app.post('/save', function(req, res) {
     tempEntry = entry;
     tempEntryIndex = entryIndex;
 
-    // Get the overwrite HTML file from disk
-    fs.readFile('./app/entry-overwrite.html', 'utf8', function(error, data) {
+    // Create page content
+    var pageContent = '<section class="section">\
+      <form class="form" action="overwrite" method="post">\
+        <a href="javascript:history.back()" class="button">Abbrechen</a>\
+        <input type="submit" value="Überschreiben">\
+      </form>\
+    </section>';
 
-      // Modify the file with jsdom
-      jsdom.env(data, [], function(errors, window) {
-
-        // Send the modified HTML file to the user
-        res.send(window.document.documentElement.outerHTML);
-
-        // Close the jsdom window
-        window.close();
-      });
-    });
+    // Send HTML file
+    res.send(pageTemplate(
+      'Eintrag überschreiben',
+      'Möchten Sie diesen Eintrag wirklich überschreiben?',
+      pageContent(),
+      'javascript:history.back()')
+    );
   } else {
 
     // Create new database entry
@@ -337,25 +370,24 @@ app.post('/save', function(req, res) {
     // Write JSON config file to disk
     fs.writeFile(paths.database, JSON.stringify(database, null, 2), function(err) {
 
-      // Get success/error HTML file from disk
-      fs.readFile('./app/entry-saved.html', 'utf8', function(error, data) {
+      // Output error if there is one
+      if (err) {
+        res.send(pageTemplate(
+          'Fehler',
+          'Der Eintrag konnte nicht gespeichert werden.',
+          err,
+          'javascript:history.back()')
+        );
 
-        // Modify the file with jsdom
-        jsdom.env(data, [], function(errors, window) {
-
-          // If we have an error message inject it into the HTML
-          if (err) {
-            window.document.getElementById('title').innerHTML = 'Eintrag wurde nicht gespeichert';
-            window.document.getElementById('subtitle').innerHTML = err;
-          }
-
-          // Send the modified HTML file to the user
-          res.send(window.document.documentElement.outerHTML);
-
-          // Close the jsdom window
-          window.close();
-        });
-      });
+      // Output success message
+      } else {
+        res.send(pageTemplate(
+          'Eintrag gespeichert',
+          'Der Eintrag wurde erfolgreich gespeichert.',
+          '',
+          '/new')
+        );
+      }
     });
   }
 });
@@ -372,25 +404,24 @@ app.post('/overwrite', function(req, res) {
   // Write JSON config file to disk
   fs.writeFile(paths.database, JSON.stringify(database, null, 2), function(err) {
 
-    // Get success/error HTML file from disk
-    fs.readFile('./app/entry-saved.html', 'utf8', function(error, data) {
+    // Output error if there is one
+    if (err) {
+      res.send(pageTemplate(
+        'Fehler',
+        'Der Eintrag konnte nicht gespeichert werden.',
+        err,
+        'javascript:history.back()')
+      );
 
-      // Modify the file with jsdom
-      jsdom.env(data, [], function(errors, window) {
-
-        // If we have an error message inject it into the HTML
-        if (err) {
-          window.document.getElementById('title').innerHTML = 'Eintrag wurde nicht gespeichert';
-          window.document.getElementById('subtitle').innerHTML = err;
-        }
-
-        // Send the modified HTML file to the user
-        res.send(window.document.documentElement.outerHTML);
-
-        // Close the jsdom window
-        window.close();
-      });
-    });
+    // Output success message
+    } else {
+      res.send(pageTemplate(
+        'Eintrag gespeichert',
+        'Der Eintrag wurde erfolgreich gespeichert.',
+        '',
+        '/new')
+      );
+    }
   });
 });
 
@@ -457,27 +488,32 @@ app.get('/print', function(req, res) {
     </section>';
   }
 
-  // Get HTML file from local disk
-  fs.readFile('./app/print.html', 'utf8', function(error, data) {
+  // Create page content
+  var pageContent = function() {
+    // Load template from disk
+    var htmlFile = fs.readFileSync(paths.html + 'print.html', 'utf-8');
+    var document = jsdom(htmlFile).defaultView.document;
 
-    // Modify the file with jsdom
-    jsdom.env(data, [], function(errors, window) {
-
-      // Print config information
-      for (var key in config) {
-        window.document.getElementById(key).innerHTML = config[key];
+    // Print config information
+    for (var key in config) {
+      if (document.getElementById(key)) {
+        document.getElementById(key).innerHTML = config[key];
       }
+    }
 
-      // Inject the HTML of all entries into the document
-      window.document.getElementById('entries').innerHTML = entriesHTML;
+    // Inject the HTML of all entries into the document
+    document.getElementById('entries').innerHTML = entriesHTML;
 
-      // Send the modified HTML file to the user
-      res.send(window.document.documentElement.outerHTML);
+    return document.documentElement.outerHTML;
+  };
 
-      // Close the jsdom window
-      window.close();
-    });
-  });
+  // Send HTML file
+  res.send(pageTemplate(
+    config.title,
+    config.subtitle,
+    pageContent(),
+    '/')
+  );
 });
 
 
