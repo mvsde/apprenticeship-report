@@ -111,29 +111,58 @@ app.post('/config-saved', function(req, res) {
 
 
 
+function createWeekdaysHTML(work) {
+
+  var createWorkHTML = function(index) {
+    var html = '';
+
+    if (work && work[index]) {
+      for (var i = 0; i < work[index].tasks.length; i++) {
+        html += '<div class="form-group form-work__input">\
+          <label class="form-input form-group__item form-group__item--80">Beschreibung\
+            <input type="text" name="work-' + index + '" value="' + work[index].tasks[i] + '" class="form-input__field">\
+          </label>\
+          <label class="form-input form-group__item form-group__item--20">Zeit\
+            <input type="number" step="0.25" name="time-' + index + '" value="' + work[index].hours[i] + '" class="form-input__field">\
+          </label>\
+        </div>';
+      }
+    } else {
+      html = '<div class="form-group form-work__input">\
+        <label class="form-input form-group__item form-group__item--80">Beschreibung\
+          <input type="text" name="work-' + index + '" class="form-input__field">\
+        </label>\
+        <label class="form-input form-group__item form-group__item--20">Zeit\
+          <input type="number" step="0.25" name="time-' + index + '" class="form-input__field">\
+        </label>\
+      </div>';
+    }
+    return html;
+  }
+
+  // This variable holds all the weekdays HTML
+  var weekdaysHTML = '';
+
+  // Create the weekdays HTML
+  for (var i = 0; i < weekdays.length; i++) {
+    weekdaysHTML += '<div class="form-work">\
+      <h3 class="form__subtitle">' + weekdays[i] + '</h3>\
+      <div class="form-work__group">' + createWorkHTML(i) + '</div>\
+      <button class="form-work__button">+</button>\
+    </div>'
+  }
+
+  return weekdaysHTML;
+}
+
+
+
+
+
 // Serve new entry page
 app.get('/new', function(req, res) {
   // Refresh database
   loadDatabase();
-
-  var weekdaysHTML = '';
-
-  for (var i = 0; i < weekdays.length; i++) {
-    weekdaysHTML += '<div class="form-work">\
-      <h3 class="form__subtitle">' + weekdays[i] + '</h3>\
-      <div class="form-work__group">\
-        <div class="form-group form-work__input">\
-          <label class="form-input form-group__item form-group__item--80">Beschreibung\
-            <input type="text" name="work-' + i + '" class="form-input__field">\
-          </label>\
-          <label class="form-input form-group__item form-group__item--20">Zeit\
-            <input type="number" step="0.25" name="time-' + i + '" class="form-input__field">\
-          </label>\
-        </div>\
-      </div>\
-      <button class="form-work__button">+</button>\
-    </div>'
-  }
 
   // Get HTML file from local disk
   fs.readFile('./app/entry.html', 'utf8', function(error, data) {
@@ -149,7 +178,7 @@ app.get('/new', function(req, res) {
       window.document.getElementById('menu').removeChild(window.document.getElementById('menu-new'));
 
       // Inject the weekdays form HTML
-      window.document.getElementById('weekdays').innerHTML = weekdaysHTML;
+      window.document.getElementById('weekdays').innerHTML = createWeekdaysHTML();
 
       // Send the modified HTML file to the user
       res.send(window.document.documentElement.outerHTML);
@@ -177,6 +206,9 @@ app.get('/edit', function(req, res) {
       // Inject the correct title and subtitle
       window.document.getElementById('title').innerHTML = 'Eintrag bearbeiten';
       window.document.getElementById('subtitle').innerHTML = 'Einen bestehenden Eintrag bearbeiten.';
+
+      // Inject the weekdays form HTML
+      window.document.getElementById('weekdays').innerHTML = createWeekdaysHTML();
 
       // Send the modified HTML file to the user
       res.send(window.document.documentElement.outerHTML);
@@ -226,6 +258,60 @@ app.get('/print', function(req, res) {
     return dateA - dateB;
   });
 
+  // This variable holds all the entry HTML
+  var entriesHTML = '';
+
+  // Iterate through all entries
+  for (var i = 0; i < database.length; i++) {
+    var daysHTML = '';
+    var weekHours = 0;
+
+    // Create the HTML for the daily tasks
+    for (var j = 0; j < database[i].work.length; j++) {
+      var hours = database[i].work[j].hours.reduce(function(a, b) { return a + b; });
+      weekHours += hours;
+
+      daysHTML += '<tr>\
+        <td>' + weekdays[j] + '</td>\
+        <td>' + database[i].work[j].tasks.join('<br>') + '</td>\
+        <td>' + database[i].work[j].hours.join('<br>') + '</td>\
+        <td>' + hours + '</td>\
+      </tr>';
+    }
+
+    // Create the HTML frame for the whole empty
+    entriesHTML += '<section class="section section--entry page-break--none">\
+      <a href="edit?=' + i + '" class="button button--edit-entry print-hidden">\
+        <span class="icon icon--edit"></span>\
+      </a>\
+      <table class="table table--entry">\
+        <thead>\
+          <tr>\
+            <th colspan="2">' + database[i].start + ' bis ' + database[i].end + '</th>\
+            <th colspan="2">Nr. ' + (i + 1) + '</th>\
+          </tr>\
+          <tr>\
+            <th>Tag</th>\
+            <th>Ausgeführte Arbeiten oder Unterricht</th>\
+            <th>Std.</th>\
+            <th>Ges.</th>\
+          </tr>\
+        </thead>\
+        <tfoot>\
+          <tr>\
+            <td colspan="3">Wochenstunden</td>\
+            <td>' + weekHours + '</td>\
+          </tr>\
+        </tfoot>\
+        <tbody>' +
+          daysHTML +
+        '</tbody>\
+      </table>\
+      <p class="signature">Auszubildender</p>\
+      <p class="signature">Ausbilder/-in</p>\
+    </section>';
+  }
+
   // Get HTML file from local disk
   fs.readFile('./app/print.html', 'utf8', function(error, data) {
 
@@ -235,60 +321,6 @@ app.get('/print', function(req, res) {
       // Print config information
       for (var key in config) {
         window.document.getElementById(key).innerHTML = config[key];
-      }
-
-      // This variable holds all the entry HTML
-      var entriesHTML = '';
-
-      // Iterate through all entries
-      for (var i = 0; i < database.length; i++) {
-        var daysHTML = '';
-        var weekHours = 0;
-
-        // Create the HTML for the daily tasks
-        for (var j = 0; j < database[i].work.length; j++) {
-          var hours = database[i].work[j].hours.reduce(function(a, b) { return a + b; });
-          weekHours += hours;
-
-          daysHTML += '<tr>\
-            <td>' + weekdays[j] + '</td>\
-            <td>' + database[i].work[j].tasks.join('<br>') + '</td>\
-            <td>' + database[i].work[j].hours.join('<br>') + '</td>\
-            <td>' + hours + '</td>\
-          </tr>';
-        }
-
-        // Create the HTML frame for the whole empty
-        entriesHTML += '<section class="section section--entry page-break--none">\
-          <a href="edit?=' + i + '" class="button button--edit-entry print-hidden">\
-            <span class="icon icon--edit"></span>\
-          </a>\
-          <table class="table table--entry">\
-            <thead>\
-              <tr>\
-                <th colspan="2">' + database[i].start + ' bis ' + database[i].end + '</th>\
-                <th colspan="2">Nr. ' + (i + 1) + '</th>\
-              </tr>\
-              <tr>\
-                <th>Tag</th>\
-                <th>Ausgeführte Arbeiten oder Unterricht</th>\
-                <th>Std.</th>\
-                <th>Ges.</th>\
-              </tr>\
-            </thead>\
-            <tfoot>\
-              <tr>\
-                <td colspan="3">Wochenstunden</td>\
-                <td>' + weekHours + '</td>\
-              </tr>\
-            </tfoot>\
-            <tbody>' +
-              daysHTML +
-            '</tbody>\
-          </table>\
-          <p class="signature">Auszubildender</p>\
-          <p class="signature">Ausbilder/-in</p>\
-        </section>';
       }
 
       // Inject the HTML of all entries into the document
