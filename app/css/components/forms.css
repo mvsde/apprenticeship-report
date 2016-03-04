@@ -163,17 +163,23 @@ button,
 
 .form-work {
   position: relative;
+  padding-right: 8rem;
 }
+
+  .form-work__input {
+    position: relative;
+  }
 
   .form-work__button {
     position: absolute;
-    bottom: -3rem;
-    right: 0;
   }
 
-  @media (min-width: 1300px) {
-    .form-work__button {
+    .form-work__button--remove {
       bottom: 3rem;
-      right: -4rem;
+      right: -3rem;
     }
-  }
+
+    .form-work__button--add {
+      bottom: 3rem;
+      right: 0;
+    }

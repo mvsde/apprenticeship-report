@@ -136,13 +136,22 @@ function createWeekdaysHTML(work) {
 
     if (work && work[index]) {
       for (var i = 0; i < work[index].tasks.length; i++) {
+
+        // Variable that holds the remove button HTML
+        var removeButton = '';
+
+        // Don't generate remove button HTML for first entry
+        if (i > 0) {
+          removeButton = '<button class="form-work__button form-work__button--remove">-</button>';
+        }
+
         html += '<div class="form-group form-work__input">\
           <label class="form-input form-group__item form-group__item--80">Beschreibung\
             <input type="text" name="work-' + index + '" value="' + work[index].tasks[i] + '" class="form-input__field">\
           </label>\
           <label class="form-input form-group__item form-group__item--20">Zeit\
             <input type="number" step="0.25" name="time-' + index + '" value="' + work[index].hours[i] + '" class="form-input__field">\
-          </label>\
+          </label>' + removeButton + '\
         </div>';
       }
     } else {
@@ -166,7 +175,7 @@ function createWeekdaysHTML(work) {
     weekdaysHTML += '<div class="form-work">\
       <h3 class="form__subtitle">' + weekdays[i] + '</h3>\
       <div class="form-work__group">' + createWorkHTML(i) + '</div>\
-      <button class="form-work__button">+</button>\
+      <button class="form-work__button form-work__button--add">+</button>\
     </div>'
   }
 

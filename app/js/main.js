@@ -4,14 +4,14 @@
 
 ;(function() {
   // Cache button elements
-  var formButton = document.getElementsByClassName('form-work__button');
+  var addButton = document.getElementsByClassName('form-work__button--add');
 
   // Set global variables
   var formGroup = [];
   var formInput = [];
 
-  for (var i = 0; i < formButton.length; i++) {
-    formGroup[i] = formButton[i].previousElementSibling;
+  for (var i = 0; i < addButton.length; i++) {
+    formGroup[i] = addButton[i].previousElementSibling;
     formInput[i] = document.createElement('div');
     formInput[i].className = 'form-group form-work__input';
     formInput[i].innerHTML = '\
@@ -20,13 +20,14 @@
       </label>\
       <label class="form-input form-group__item form-group__item--20">Zeit\
         <input type="number" step="0.25" name="time-' + i + '" class="form-input__field">\
-      </label>';
+      </label>\
+      <button class="form-work__button form-work__button--remove">-</button>';
 
-    formButton[i].dataset.index = i;
+    addButton[i].dataset.index = i;
   }
 
-  for (var i = 0; i < formButton.length; i++) {
-    formButton[i].addEventListener('click', function(event) {
+  for (var i = 0; i < addButton.length; i++) {
+    addButton[i].addEventListener('click', function(event) {
       event.preventDefault();
 
       // Append a clone of fromGroupWork to formGroup
@@ -34,6 +35,21 @@
 
       var nameWork = document.querySelectorAll('[name="work-' + this.dataset.index + '"]');
       nameWork[nameWork.length - 1].focus();
+    });
+  }
+})();
+
+
+;(function() {
+  // Cache button elements
+  var removeButton = document.getElementsByClassName('form-work__button--remove');
+
+  for (var i = 0; i < removeButton.length; i++) {
+    removeButton[i].addEventListener('click', function(event) {
+      event.preventDefault();
+
+      // Remove parentNode
+      this.parentNode.remove();
     });
   }
 })();
