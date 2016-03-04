@@ -1,6 +1,11 @@
 'use strict';
 
-// Node Modules
+
+
+
+// NODE MODULES
+// =============================================================================
+
 const fs         = require('fs');
 const express    = require('express');
 const bodyParser = require('body-parser');
@@ -279,10 +284,10 @@ app.get('/edit', function(req, res) {
 
   // Send HTML file
   res.send(pageTemplate(
-    'Eintrag erstellen',
-    'Einen neuen Eintrag erstellen.',
+    'Eintrag bearbeiten',
+    'Einen bestehenden Eintrag bearbeiten.',
     pageContent(),
-    '/')
+    '/print')
   );
 });
 
