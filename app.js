@@ -30,7 +30,7 @@ var database;
 // to refresh the variable information
 var loadDatabase = function() {
   config   = JSON.parse(fs.readFileSync(paths.config));
-  database = JSON.parse(fs.readFileSync(paths.database)).entries;
+  database = JSON.parse(fs.readFileSync(paths.database));
 
   // Sort database by week
   database.sort(function(a, b) {
@@ -147,20 +147,20 @@ function createWeekdaysHTML(work) {
 
         html += '<div class="form-group form-work__input">\
           <label class="form-input form-group__item form-group__item--80">Beschreibung\
-            <input type="text" name="work-' + index + '" value="' + work[index].tasks[i] + '" class="form-input__field">\
+            <input type="text" name="task-' + index + '" value="' + work[index].tasks[i] + '" class="form-input__field">\
           </label>\
           <label class="form-input form-group__item form-group__item--20">Zeit\
-            <input type="number" step="0.25" name="time-' + index + '" value="' + work[index].hours[i] + '" class="form-input__field">\
+            <input type="number" step="0.25" name="hours-' + index + '" value="' + work[index].hours[i] + '" class="form-input__field">\
           </label>' + removeButton + '\
         </div>';
       }
     } else {
       html = '<div class="form-group form-work__input">\
         <label class="form-input form-group__item form-group__item--80">Beschreibung\
-          <input type="text" name="work-' + index + '" class="form-input__field">\
+          <input type="text" name="task-' + index + '" class="form-input__field">\
         </label>\
         <label class="form-input form-group__item form-group__item--20">Zeit\
-          <input type="number" step="0.25" name="time-' + index + '" class="form-input__field">\
+          <input type="number" step="0.25" name="hours-' + index + '" class="form-input__field">\
         </label>\
       </div>';
     }
@@ -265,19 +265,77 @@ app.post('/entry-saved', function(req, res) {
   // Refresh database
   loadDatabase();
 
-  var entry;
-
+  // Check if entry already exists
+  var entryIndex;
   for (var i = 0; i < database.length; i++) {
     if (database[i].start === req.body.start) {
-      entry = database[i];
+      entryIndex = i;
     }
   }
 
-  // Update config JSON
-  for (var key in req.body) {
+  // Create entry skeleton
+  var entry = {
+    "start": req.body.start,
+    "end": req.body.end,
+    "work": []
+  };
+
+  // Save tasks and hours
+  for (var i = 0; i < weekdays.length; i++) {
+    var tasks = req.body['task-' + i];
+    var hours = req.body['hours-' + i];
+
+    if (typeof tasks === 'string') {
+      tasks = [tasks];
+    }
+
+    if (hours === '') {
+      hours = [0];
+    } else if (typeof hours === 'string' && hours != '') {
+      hours = [parseInt(hours, 10)];
+    } else if (Array.isArray(hours)) {
+      for (var j = 0; j < hours.length; j++) {
+        hours[j] = parseInt(hours[j], 10);
+      }
+    }
+
+    entry.work.push({
+      tasks: tasks,
+      hours: hours
+    });
   }
 
-  res.send('Test');
+  // If entry exists overwrite it
+  // TODO: Ask the user to confirm
+  if (typeof entryIndex === 'number') {
+    database[entryIndex] = entry;
+  } else {
+    database.push(entry);
+  }
+
+  // Write JSON config file to disk
+  fs.writeFile(paths.database, JSON.stringify(database, null, 2), function(err) {
+
+    // Get success/error HTML file from disk
+    fs.readFile('./app/entry-saved.html', 'utf8', function(error, data) {
+
+      // Modify the file with jsdom
+      jsdom.env(data, [], function(errors, window) {
+
+        // If we have an error message inject it into the HTML
+        if (err) {
+          window.document.getElementById('title').innerHTML = 'Eintrag wurde nicht gespeichert';
+          window.document.getElementById('subtitle').innerHTML = err;
+        }
+
+        // Send the modified HTML file to the user
+        res.send(window.document.documentElement.outerHTML);
+
+        // Close the jsdom window
+        window.close();
+      });
+    });
+  });
 });
 
 
