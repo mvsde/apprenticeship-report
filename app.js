@@ -105,8 +105,7 @@ app.get('/config', function(req, res) {
   // Create page content
   var pageContent = function() {
     // Load template from disk
-    var htmlFile = fs.readFileSync(paths.html + 'config.html', 'utf-8');
-    var document = jsdom(htmlFile).defaultView.document;
+    var document = jsdom(fs.readFileSync(paths.html + 'config.html', 'utf-8')).defaultView.document;
 
     // Inject settings as default input values
     for (var key in config) {
@@ -235,8 +234,7 @@ app.get('/new', function(req, res) {
   // Create page content
   var pageContent = function() {
     // Load template from disk
-    var htmlFile = fs.readFileSync(paths.html + 'entry.html', 'utf-8');
-    var document = jsdom(htmlFile).defaultView.document;
+    var document = jsdom(fs.readFileSync(paths.html + 'entry.html', 'utf-8')).defaultView.document;
 
     // Inject the weekdays form HTML
     document.getElementById('weekdays').innerHTML = createWeekdaysHTML();
@@ -269,8 +267,7 @@ app.get('/edit', function(req, res) {
   // Create page content
   var pageContent = function() {
     // Load template from disk
-    var htmlFile = fs.readFileSync(paths.html + 'entry.html', 'utf-8');
-    var document = jsdom(htmlFile).defaultView.document;
+    var document = jsdom(fs.readFileSync(paths.html + 'entry.html', 'utf-8')).defaultView.document;
 
     // Inject dates
     document.querySelector('[name="start"]').defaultValue = entry.start;
@@ -364,7 +361,7 @@ app.post('/save', function(req, res) {
     res.send(pageTemplate(
       'Eintrag überschreiben',
       'Möchten Sie diesen Eintrag wirklich überschreiben?',
-      pageContent(),
+      pageContent,
       'javascript:history.back()')
     );
   } else {
@@ -496,8 +493,7 @@ app.get('/print', function(req, res) {
   // Create page content
   var pageContent = function() {
     // Load template from disk
-    var htmlFile = fs.readFileSync(paths.html + 'print.html', 'utf-8');
-    var document = jsdom(htmlFile).defaultView.document;
+    var document = jsdom(fs.readFileSync(paths.html + 'print.html', 'utf-8')).defaultView.document;
 
     // Print config information
     for (var key in config) {

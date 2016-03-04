@@ -5,10 +5,13 @@
 ;(function() {
   // Cache button elements
   var addButton = document.getElementsByClassName('form-work__button--add');
+  var removeButton = document.getElementsByClassName('form-work__button--remove');
+
 
   // Set global variables
   var formGroup = [];
   var formInput = [];
+
 
   for (var i = 0; i < addButton.length; i++) {
     formGroup[i] = addButton[i].previousElementSibling;
@@ -26,6 +29,20 @@
     addButton[i].dataset.index = i;
   }
 
+
+  var removeButtonEventListener = function() {
+    for (var i = 0; i < removeButton.length; i++) {
+      removeButton[i].addEventListener('click', function(event) {
+        event.preventDefault();
+
+        // Remove parentNode
+        this.parentNode.remove();
+      });
+    }
+  };
+  removeButtonEventListener();
+
+
   for (var i = 0; i < addButton.length; i++) {
     addButton[i].addEventListener('click', function(event) {
       event.preventDefault();
@@ -35,21 +52,8 @@
 
       var nameWork = document.querySelectorAll('[name="task-' + this.dataset.index + '"]');
       nameWork[nameWork.length - 1].focus();
-    });
-  }
-})();
 
-
-;(function() {
-  // Cache button elements
-  var removeButton = document.getElementsByClassName('form-work__button--remove');
-
-  for (var i = 0; i < removeButton.length; i++) {
-    removeButton[i].addEventListener('click', function(event) {
-      event.preventDefault();
-
-      // Remove parentNode
-      this.parentNode.remove();
+      removeButtonEventListener();
     });
   }
 })();
