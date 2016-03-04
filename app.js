@@ -16,6 +16,9 @@ const paths = {
   database: './db/database.json'
 }
 
+// TODO: Provide localization file
+const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
+
 // Create database variables
 var config;
 var database;
@@ -113,16 +116,40 @@ app.get('/new', function(req, res) {
   // Refresh database
   loadDatabase();
 
+  var weekdaysHTML = '';
+
+  for (var i = 0; i < weekdays.length; i++) {
+    weekdaysHTML += '<div class="form-work">\
+      <h3 class="form__subtitle">' + weekdays[i] + '</h3>\
+      <div class="form-work__group">\
+        <div class="form-group form-work__input">\
+          <label class="form-input form-group__item form-group__item--80">Beschreibung\
+            <input type="text" name="work-' + i + '" class="form-input__field">\
+          </label>\
+          <label class="form-input form-group__item form-group__item--20">Zeit\
+            <input type="number" step="0.25" name="time-' + i + '" class="form-input__field">\
+          </label>\
+        </div>\
+      </div>\
+      <button class="form-work__button">+</button>\
+    </div>'
+  }
+
   // Get HTML file from local disk
   fs.readFile('./app/entry.html', 'utf8', function(error, data) {
 
     // Modify the file with jsdom
     jsdom.env(data, [], function(errors, window) {
 
+      // Inject the correct title and subtitle
       window.document.getElementById('title').innerHTML = 'Eintrag erstellen';
       window.document.getElementById('subtitle').innerHTML = 'Einen neuen Eintrag erstellen.';
 
+      // Remove the menu entry
       window.document.getElementById('menu').removeChild(window.document.getElementById('menu-new'));
+
+      // Inject the weekdays form HTML
+      window.document.getElementById('weekdays').innerHTML = weekdaysHTML;
 
       // Send the modified HTML file to the user
       res.send(window.document.documentElement.outerHTML);
@@ -147,6 +174,7 @@ app.get('/edit', function(req, res) {
     // Modify the file with jsdom
     jsdom.env(data, [], function(errors, window) {
 
+      // Inject the correct title and subtitle
       window.document.getElementById('title').innerHTML = 'Eintrag bearbeiten';
       window.document.getElementById('subtitle').innerHTML = 'Einen bestehenden Eintrag bearbeiten.';
 
@@ -157,6 +185,29 @@ app.get('/edit', function(req, res) {
       window.close();
     });
   });
+});
+
+
+
+
+// Handle entry saving
+app.post('/entry-saved', function(req, res) {
+  // Refresh database
+  loadDatabase();
+
+  var entry;
+
+  for (var i = 0; i < database.length; i++) {
+    if (database[i].start === req.body.start) {
+      entry = database[i];
+    }
+  }
+
+  // Update config JSON
+  for (var key in req.body) {
+  }
+
+  res.send('Test');
 });
 
 
@@ -186,9 +237,6 @@ app.get('/print', function(req, res) {
         window.document.getElementById(key).innerHTML = config[key];
       }
 
-      // TODO: Provide localization file
-      const weekDays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
-
       // This variable holds all the entry HTML
       var entriesHTML = '';
 
@@ -203,7 +251,7 @@ app.get('/print', function(req, res) {
           weekHours += hours;
 
           daysHTML += '<tr>\
-            <td>' + weekDays[j] + '</td>\
+            <td>' + weekdays[j] + '</td>\
             <td>' + database[i].work[j].tasks.join('<br>') + '</td>\
             <td>' + database[i].work[j].hours.join('<br>') + '</td>\
             <td>' + hours + '</td>\
