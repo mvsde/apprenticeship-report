@@ -10,7 +10,9 @@ const open       = require('open');
 
 
 
-// Settings
+// SETTINGS
+// =============================================================================
+
 const paths = {
   config:   './db/config.json',
   database: './db/database.json'
@@ -37,7 +39,9 @@ loadDatabase();
 
 
 
-// Load Express App
+// LOAD EXPRESS
+// =============================================================================
+
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/app'));
@@ -45,7 +49,9 @@ app.use(express.static(__dirname + '/app'));
 
 
 
-// Serve config page
+// CONFIG PAGE
+// =============================================================================
+
 app.get('/config', function(req, res) {
   // Refresh database
   loadDatabase();
@@ -73,7 +79,9 @@ app.get('/config', function(req, res) {
 
 
 
-// Handle config saving
+// CONFIG SAVING
+// =============================================================================
+
 app.post('/config-saved', function(req, res) {
 
   // Update config JSON
@@ -111,8 +119,10 @@ app.post('/config-saved', function(req, res) {
 
 
 
-function createWeekdaysHTML(work) {
+// CREATE WEEKDAYS FORM HTML
+// =============================================================================
 
+function createWeekdaysHTML(work) {
   var createWorkHTML = function(index) {
     var html = '';
 
@@ -158,8 +168,9 @@ function createWeekdaysHTML(work) {
 
 
 
+// NEW ENTRY PAGE
+// =============================================================================
 
-// Serve new entry page
 app.get('/new', function(req, res) {
   // Refresh database
   loadDatabase();
@@ -192,7 +203,9 @@ app.get('/new', function(req, res) {
 
 
 
-// Serve edit entry page
+// EDIT ENTRY PAGE
+// =============================================================================
+
 app.get('/edit', function(req, res) {
   // Refresh database
   loadDatabase();
@@ -222,7 +235,9 @@ app.get('/edit', function(req, res) {
 
 
 
-// Handle entry saving
+// ENTRY SAVING
+// =============================================================================
+
 app.post('/entry-saved', function(req, res) {
   // Refresh database
   loadDatabase();
@@ -245,7 +260,9 @@ app.post('/entry-saved', function(req, res) {
 
 
 
-// Serve print page
+// PRINT PAGE
+// =============================================================================
+
 app.get('/print', function(req, res) {
   // Refresh database
   loadDatabase();
@@ -338,7 +355,9 @@ app.get('/print', function(req, res) {
 
 
 
-// Start web server and open default browser
+// START SERVER
+// =============================================================================
+
 app.listen(0, function() {
   console.log('Server started at http://localhost:' + this.address().port);
 
