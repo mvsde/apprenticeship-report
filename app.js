@@ -18,7 +18,7 @@ const paths = {
   database: './db/database.json'
 }
 
-// TODO: Provide localization file
+// Array of weekdays
 const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
 
 // Create database variables
@@ -261,7 +261,11 @@ app.get('/edit', function(req, res) {
 // ENTRY SAVING
 // =============================================================================
 
-app.post('/entry-saved', function(req, res) {
+// Temporary entry holder variables
+var tempEntry;
+var tempEntryIndex;
+
+app.post('/save', function(req, res) {
   // Refresh database
   loadDatabase();
 
@@ -306,12 +310,64 @@ app.post('/entry-saved', function(req, res) {
   }
 
   // If entry exists overwrite it
-  // TODO: Ask the user to confirm
   if (typeof entryIndex === 'number') {
-    database[entryIndex] = entry;
+
+    // Create temporary entry information
+    tempEntry = entry;
+    tempEntryIndex = entryIndex;
+
+    // Get the overwrite HTML file from disk
+    fs.readFile('./app/entry-overwrite.html', 'utf8', function(error, data) {
+
+      // Modify the file with jsdom
+      jsdom.env(data, [], function(errors, window) {
+
+        // Send the modified HTML file to the user
+        res.send(window.document.documentElement.outerHTML);
+
+        // Close the jsdom window
+        window.close();
+      });
+    });
   } else {
+
+    // Create new database entry
     database.push(entry);
+
+    // Write JSON config file to disk
+    fs.writeFile(paths.database, JSON.stringify(database, null, 2), function(err) {
+
+      // Get success/error HTML file from disk
+      fs.readFile('./app/entry-saved.html', 'utf8', function(error, data) {
+
+        // Modify the file with jsdom
+        jsdom.env(data, [], function(errors, window) {
+
+          // If we have an error message inject it into the HTML
+          if (err) {
+            window.document.getElementById('title').innerHTML = 'Eintrag wurde nicht gespeichert';
+            window.document.getElementById('subtitle').innerHTML = err;
+          }
+
+          // Send the modified HTML file to the user
+          res.send(window.document.documentElement.outerHTML);
+
+          // Close the jsdom window
+          window.close();
+        });
+      });
+    });
   }
+});
+
+
+
+app.post('/overwrite', function(req, res) {
+  // Refresh database
+  loadDatabase();
+
+  // Overwrite existing entry with tempEntry
+  database[tempEntryIndex] = tempEntry;
 
   // Write JSON config file to disk
   fs.writeFile(paths.database, JSON.stringify(database, null, 2), function(err) {
@@ -337,7 +393,6 @@ app.post('/entry-saved', function(req, res) {
     });
   });
 });
-
 
 
 
