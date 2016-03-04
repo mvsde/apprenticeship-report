@@ -41,21 +41,20 @@ td {
 .section--entry {
   position: relative;
   margin-bottom: 4rem;
+  padding-right: 3rem;
 }
 
-.button--edit-entry {
+.button--edit-entry,
+.button--delete-entry {
   position: absolute;
-  top: -3rem;
+  top: 0;
   right: 0;
   padding: 0.4em;
 }
 
-  @media (min-width: 1300px) {
-    .button--edit-entry {
-      top: 0;
-      right: -3rem;
-    }
-  }
+.button--delete-entry {
+  top: 3rem;
+}
 
 .table--entry,
 .table--entry th,

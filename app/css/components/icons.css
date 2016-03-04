@@ -26,3 +26,7 @@
 .icon--edit {
   background-image: url('../icons/edit.svg');
 }
+
+.icon--delete {
+  background-image: url('../icons/delete.svg');
+}

@@ -429,6 +429,64 @@ app.post('/overwrite', function(req, res) {
 
 
 
+
+// PRINT PAGE
+// =============================================================================
+
+app.get('/delete', function(req, res) {
+  // Refresh database
+  loadDatabase();
+
+  // Load entry from database
+  var entry = database[req.query.entry];
+
+  // Create page content
+  var pageContent = function() {
+    // Load template from disk
+    var document = jsdom(fs.readFileSync(paths.html + 'entry.html', 'utf-8')).defaultView.document;
+
+    // Inject dates
+    document.querySelector('[name="start"]').defaultValue = entry.start;
+    document.querySelector('[name="end"]').defaultValue = entry.end;
+
+    // Inject the weekdays form HTML
+    document.getElementById('weekdays').innerHTML = createWeekdaysHTML(entry.work);
+
+    // Disable input fields
+    var inputs = document.querySelectorAll('input');
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].disabled = true;
+    }
+
+    // Remove buttons
+    var buttons = document.querySelectorAll('button');
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].parentNode.removeChild(buttons[i]);
+    }
+
+    // Add delete button
+    var form = document.createElement('section');
+    form.innerHTML = '<form class="form" action="confirm-delete" method="post">\
+        <a href="javascript:history.back()" class="button">Abbrechen</a>\
+        <input type="submit" value="Löschen">\
+      </form>';
+    document.querySelector('.section').appendChild(form);
+
+    return document.documentElement.outerHTML;
+  };
+
+  // Send HTML file
+  res.send(pageTemplate(
+    'Eintrag löschen',
+    'Möchten Sie diesen Eintrag wirklich löschen?',
+    pageContent(),
+    '/print')
+  );
+});
+
+
+
+
 // PRINT PAGE
 // =============================================================================
 
@@ -461,6 +519,9 @@ app.get('/print', function(req, res) {
     entriesHTML += '<section class="section section--entry page-break--none">\
       <a href="edit?entry=' + i + '" class="button button--edit-entry print-hidden">\
         <span class="icon icon--edit"></span>\
+      </a>\
+      <a href="delete?entry=' + i + '" class="button button--delete-entry print-hidden">\
+        <span class="icon icon--delete"></span>\
       </a>\
       <table class="table table--entry">\
         <thead>\
