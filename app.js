@@ -31,6 +31,14 @@ var database;
 var loadDatabase = function() {
   config   = JSON.parse(fs.readFileSync(paths.config));
   database = JSON.parse(fs.readFileSync(paths.database)).entries;
+
+  // Sort database by week
+  database.sort(function(a, b) {
+    var dateA = new Date(a.start);
+    var dateB = new Date(b.start);
+
+    return dateA - dateB;
+  });
 };
 
 // Initial database loading
@@ -210,6 +218,8 @@ app.get('/edit', function(req, res) {
   // Refresh database
   loadDatabase();
 
+  var entry = database[req.query.entry];
+
   // Get HTML file from local disk
   fs.readFile('./app/entry.html', 'utf8', function(error, data) {
 
@@ -220,8 +230,12 @@ app.get('/edit', function(req, res) {
       window.document.getElementById('title').innerHTML = 'Eintrag bearbeiten';
       window.document.getElementById('subtitle').innerHTML = 'Einen bestehenden Eintrag bearbeiten.';
 
+      // Inject dates
+      window.document.querySelector('[name="start"]').defaultValue = entry.start;
+      window.document.querySelector('[name="end"]').defaultValue = entry.end;
+
       // Inject the weekdays form HTML
-      window.document.getElementById('weekdays').innerHTML = createWeekdaysHTML();
+      window.document.getElementById('weekdays').innerHTML = createWeekdaysHTML(entry.work);
 
       // Send the modified HTML file to the user
       res.send(window.document.documentElement.outerHTML);
@@ -267,14 +281,6 @@ app.get('/print', function(req, res) {
   // Refresh database
   loadDatabase();
 
-  // Sort database by week
-  database.sort(function(a, b) {
-    var dateA = new Date(a.start);
-    var dateB = new Date(b.start);
-
-    return dateA - dateB;
-  });
-
   // This variable holds all the entry HTML
   var entriesHTML = '';
 
@@ -298,7 +304,7 @@ app.get('/print', function(req, res) {
 
     // Create the HTML frame for the whole empty
     entriesHTML += '<section class="section section--entry page-break--none">\
-      <a href="edit?=' + i + '" class="button button--edit-entry print-hidden">\
+      <a href="edit?entry=' + i + '" class="button button--edit-entry print-hidden">\
         <span class="icon icon--edit"></span>\
       </a>\
       <table class="table table--entry">\
