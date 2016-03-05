@@ -401,9 +401,6 @@ app.post('/save', function(req, res) {
 // =============================================================================
 
 app.post('/overwrite', function(req, res) {
-  // Refresh database
-  loadDatabase();
-
   // Overwrite existing entry with tempEntry
   database[tempEntryIndex] = tempEntry;
 
@@ -437,12 +434,18 @@ app.post('/overwrite', function(req, res) {
 // DELETE ENTRY
 // =============================================================================
 
+// Temporary entry holder
+var tempEntryDelete;
+
 app.get('/delete', function(req, res) {
   // Refresh database
   loadDatabase();
 
+  // Save entry temporarily
+  tempEntryDelete = req.query.entry;
+
   // Load entry from database
-  var entry = database[req.query.entry];
+  var entry = database[tempEntryDelete];
 
   // Create page content
   var pageContent = function() {
@@ -486,6 +489,40 @@ app.get('/delete', function(req, res) {
     pageContent(),
     '/print')
   );
+});
+
+
+
+
+// CONFIRM DELETE
+// =============================================================================
+
+app.post('/confirm-delete', function(req, res) {
+  // Create new database entry
+  database.splice(tempEntryDelete, 1);
+
+  // Write JSON config file to disk
+  fs.writeFile(paths.database, JSON.stringify(database, null, 2), function(err) {
+
+    // Output error if there is one
+    if (err) {
+      res.send(pageTemplate(
+        'Fehler',
+        'Der Eintrag konnte nicht gelöscht werden.',
+        err,
+        'javascript:history.back()')
+      );
+
+    // Output success message
+    } else {
+      res.send(pageTemplate(
+        'Eintrag gelöscht',
+        'Der Eintrag wurde erfolgreich gelöscht.',
+        '',
+        '/new')
+      );
+    }
+  });
 });
 
 
