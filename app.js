@@ -85,7 +85,7 @@ app.use(express.static(__dirname + '/app'));
 
 
 
-// INDEX PAGE
+// INDEX.html
 // =============================================================================
 
 app.get('/', function(req, res) {
@@ -95,7 +95,7 @@ app.get('/', function(req, res) {
 
 
 
-// CONFIG PAGE
+// EDIT CONFIG
 // =============================================================================
 
 app.get('/config', function(req, res) {
@@ -127,7 +127,7 @@ app.get('/config', function(req, res) {
 
 
 
-// CONFIG SAVING
+// SAVE CONFIG
 // =============================================================================
 
 app.post('/config-saved', function(req, res) {
@@ -166,7 +166,7 @@ app.post('/config-saved', function(req, res) {
 
 
 
-// CREATE WEEKDAYS FORM HTML
+// WEEKDAYS FORM HTML
 // =============================================================================
 
 function createWeekdaysHTML(work) {
@@ -224,7 +224,7 @@ function createWeekdaysHTML(work) {
 
 
 
-// NEW ENTRY PAGE
+// NEW ENTRY
 // =============================================================================
 
 app.get('/new', function(req, res) {
@@ -254,7 +254,7 @@ app.get('/new', function(req, res) {
 
 
 
-// EDIT ENTRY PAGE
+// EDIT ENTRY
 // =============================================================================
 
 app.get('/edit', function(req, res) {
@@ -291,7 +291,7 @@ app.get('/edit', function(req, res) {
 
 
 
-// ENTRY SAVING
+// SAVE ENTRY
 // =============================================================================
 
 // Temporary entry holder variables
@@ -396,6 +396,10 @@ app.post('/save', function(req, res) {
 
 
 
+
+// OVERWRITE ENTRY
+// =============================================================================
+
 app.post('/overwrite', function(req, res) {
   // Refresh database
   loadDatabase();
@@ -430,7 +434,7 @@ app.post('/overwrite', function(req, res) {
 
 
 
-// PRINT PAGE
+// DELETE ENTRY
 // =============================================================================
 
 app.get('/delete', function(req, res) {
@@ -487,7 +491,7 @@ app.get('/delete', function(req, res) {
 
 
 
-// PRINT PAGE
+// PRINT OVERVIEW
 // =============================================================================
 
 app.get('/print', function(req, res) {
