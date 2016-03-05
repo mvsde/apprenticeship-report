@@ -24,12 +24,15 @@ const paths = {
   html:     './html/'
 }
 
+
 // Array of weekdays
 const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
+
 
 // Create database variables
 var config;
 var database;
+
 
 // Wrap database loading into a function
 // This way we can later use this function
@@ -49,6 +52,51 @@ var loadDatabase = function() {
 
 // Initial database loading
 loadDatabase();
+
+
+// Convert date to yyyy-mm-dd
+var convertDate = function(date) {
+  var yyyy = date.getFullYear();
+  var mm   = date.getMonth() + 1; //January is 0
+  var dd   = date.getDate();
+
+  // Add leading zero to month
+  if (mm < 10) {
+      mm = '0' + mm
+  }
+
+  // Add leading zero to day
+  if (dd < 10) {
+      dd = '0' + dd;
+  }
+
+  return yyyy + '-' + mm + '-' + dd;
+};
+
+
+// Get this week's monday and friday
+var thisWeek = {
+  monday: function() {
+    var date = new Date();
+    var day = date.getDay() || 7;
+
+    if (day !== 1) {
+      date.setHours(-24 * (day - 1));
+    }
+
+    return date;
+  },
+  friday: function() {
+    var date = new Date();
+    var day = date.getDay() || 7;
+
+    if (day !== 5) {
+      date.setHours(-24 * (day - 1) + 24 * 4);
+    }
+
+    return date;
+  }
+};
 
 
 
@@ -236,8 +284,27 @@ app.get('/new', function(req, res) {
     // Load template from disk
     var document = jsdom(fs.readFileSync(paths.html + 'entry.html', 'utf-8')).defaultView.document;
 
-    // Inject the weekdays form HTML
-    document.getElementById('weekdays').innerHTML = createWeekdaysHTML();
+    // Inject dates
+    document.querySelector('[name="start"]').defaultValue = convertDate(thisWeek.monday());
+    document.querySelector('[name="end"]').defaultValue = convertDate(thisWeek.friday());
+
+    // Check if current date has an entry
+    var entryIndex;
+    for (var i = 0; i < database.length; i++) {
+      if (database[i].start === convertDate(thisWeek.monday())) {
+        entryIndex = i;
+      }
+    }
+
+    // If current date has an entry
+    // load this entry
+    if (typeof entryIndex === 'number') {
+      document.getElementById('weekdays').innerHTML = createWeekdaysHTML(database[entryIndex].work);
+
+    // Else load a clean entry form
+    } else {
+      document.getElementById('weekdays').innerHTML = createWeekdaysHTML();
+    }
 
     return document.documentElement.outerHTML;
   };
