@@ -29,9 +29,32 @@ const paths = {
 const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
 
 
-// Create database variables
-var config;
-var database;
+// Config
+var config = {
+  entries: {},
+  load: function() {
+    this.entries = JSON.parse(fs.readFileSync(paths.config));
+  },
+  export: function() {
+    return JSON.stringify(this.entries, null, 2);
+  }
+};
+
+// Database
+var database = {
+  entries: [],
+  load: function() {
+    this.entries = JSON.parse(fs.readFileSync(paths.database));
+    this.entries.sort(function(a, b) {
+      var dateA = new Date(a.start);
+      var dateB = new Date(b.start);
+      return dateA - dateB;
+    });
+  },
+  export: function() {
+    return JSON.stringify(this.entries, null, 2);
+  }
+};
 
 
 // Wrap database loading into a function
@@ -51,7 +74,7 @@ var loadDatabase = function() {
 };
 
 // Initial database loading
-loadDatabase();
+//loadDatabase();
 
 
 // Convert date to yyyy-mm-dd
@@ -147,8 +170,8 @@ app.get('/', function(req, res) {
 // =============================================================================
 
 app.get('/config', function(req, res) {
-  // Refresh database
-  loadDatabase();
+  // Refresh config
+  config.load();
 
   // Create page content
   var pageContent = function() {
@@ -156,8 +179,8 @@ app.get('/config', function(req, res) {
     var document = jsdom(fs.readFileSync(paths.html + 'config.html', 'utf-8')).defaultView.document;
 
     // Inject settings as default input values
-    for (var key in config) {
-      document.querySelector('[name="' + key + '"]').defaultValue = config[key];
+    for (var key in config.entries) {
+      document.querySelector('[name="' + key + '"]').defaultValue = config.entries[key];
     }
 
     return document.documentElement.outerHTML;
@@ -183,12 +206,12 @@ app.post('/config-saved', function(req, res) {
   // Update config JSON
   for (var key in req.body) {
     if (req.body[key]) {
-      config[key] = req.body[key];
+      config.entries[key] = req.body[key];
     }
   }
 
   // Write JSON config file to disk
-  fs.writeFile(paths.config, JSON.stringify(config, null, 2), function(err) {
+  fs.writeFile(paths.config, config.export(), function(err) {
 
     // Output error if there is one
     if (err) {
@@ -277,7 +300,7 @@ function createWeekdaysHTML(work) {
 
 app.get('/new', function(req, res) {
   // Refresh database
-  loadDatabase();
+  database.load();
 
   // Create page content
   var pageContent = function() {
@@ -290,8 +313,8 @@ app.get('/new', function(req, res) {
 
     // Check if current date has an entry
     var entryIndex;
-    for (var i = 0; i < database.length; i++) {
-      if (database[i].start === convertDate(thisWeek.monday())) {
+    for (var i = 0; i < database.entries.length; i++) {
+      if (database.entries[i].start === convertDate(thisWeek.monday())) {
         entryIndex = i;
       }
     }
@@ -299,7 +322,7 @@ app.get('/new', function(req, res) {
     // If current date has an entry
     // load this entry
     if (typeof entryIndex === 'number') {
-      document.getElementById('weekdays').innerHTML = createWeekdaysHTML(database[entryIndex].work);
+      document.getElementById('weekdays').innerHTML = createWeekdaysHTML(database.entries[entryIndex].work);
 
     // Else load a clean entry form
     } else {
@@ -326,10 +349,10 @@ app.get('/new', function(req, res) {
 
 app.get('/edit', function(req, res) {
   // Refresh database
-  loadDatabase();
+  database.load();
 
   // Load entry from database
-  var entry = database[req.query.entry];
+  var entry = database.entries[req.query.entry];
 
   // Create page content
   var pageContent = function() {
@@ -367,12 +390,12 @@ var tempEntryIndex;
 
 app.post('/save', function(req, res) {
   // Refresh database
-  loadDatabase();
+  database.load();
 
   // Check if entry already exists
   var entryIndex;
-  for (var i = 0; i < database.length; i++) {
-    if (database[i].start === req.body.start) {
+  for (var i = 0; i < database.entries.length; i++) {
+    if (database.entries[i].start === req.body.start) {
       entryIndex = i;
     }
   }
@@ -434,10 +457,10 @@ app.post('/save', function(req, res) {
   } else {
 
     // Create new database entry
-    database.push(entry);
+    database.entries.push(entry);
 
     // Write JSON config file to disk
-    fs.writeFile(paths.database, JSON.stringify(database, null, 2), function(err) {
+    fs.writeFile(paths.database, database.export(), function(err) {
 
       // Output error if there is one
       if (err) {
@@ -469,10 +492,10 @@ app.post('/save', function(req, res) {
 
 app.post('/overwrite', function(req, res) {
   // Overwrite existing entry with tempEntry
-  database[tempEntryIndex] = tempEntry;
+  database.entries[tempEntryIndex] = tempEntry;
 
   // Write JSON config file to disk
-  fs.writeFile(paths.database, JSON.stringify(database, null, 2), function(err) {
+  fs.writeFile(paths.database, database.export(), function(err) {
 
     // Output error if there is one
     if (err) {
@@ -506,13 +529,13 @@ var tempEntryDelete;
 
 app.get('/delete', function(req, res) {
   // Refresh database
-  loadDatabase();
+  database.load();
 
   // Save entry temporarily
   tempEntryDelete = req.query.entry;
 
   // Load entry from database
-  var entry = database[tempEntryDelete];
+  var entry = database.entries[tempEntryDelete];
 
   // Create page content
   var pageContent = function() {
@@ -565,11 +588,11 @@ app.get('/delete', function(req, res) {
 // =============================================================================
 
 app.post('/confirm-delete', function(req, res) {
-  // Create new database entry
-  database.splice(tempEntryDelete, 1);
+  // Remove database entry
+  database.entries.splice(tempEntryDelete, 1);
 
   // Write JSON config file to disk
-  fs.writeFile(paths.database, JSON.stringify(database, null, 2), function(err) {
+  fs.writeFile(paths.database, database.export(), function(err) {
 
     // Output error if there is one
     if (err) {
@@ -599,26 +622,29 @@ app.post('/confirm-delete', function(req, res) {
 // =============================================================================
 
 app.get('/print', function(req, res) {
+  // Refresh config
+  config.load();
+
   // Refresh database
-  loadDatabase();
+  database.load();
 
   // This variable holds all the entry HTML
   var entriesHTML = '';
 
   // Iterate through all entries
-  for (var i = 0; i < database.length; i++) {
+  for (var i = 0; i < database.entries.length; i++) {
     var daysHTML = '';
     var weekHours = 0;
 
     // Create the HTML for the daily tasks
-    for (var j = 0; j < database[i].work.length; j++) {
-      var hours = database[i].work[j].hours.reduce(function(a, b) { return a + b; });
+    for (var j = 0; j < database.entries[i].work.length; j++) {
+      var hours = database.entries[i].work[j].hours.reduce(function(a, b) { return a + b; });
       weekHours += hours;
 
       daysHTML += '<tr>\
         <td>' + weekdays[j] + '</td>\
-        <td>' + database[i].work[j].tasks.join('<br>') + '</td>\
-        <td>' + database[i].work[j].hours.join('<br>') + '</td>\
+        <td>' + database.entries[i].work[j].tasks.join('<br>') + '</td>\
+        <td>' + database.entries[i].work[j].hours.join('<br>') + '</td>\
         <td>' + hours + '</td>\
       </tr>';
     }
@@ -634,7 +660,7 @@ app.get('/print', function(req, res) {
       <table class="table table--entry">\
         <thead>\
           <tr>\
-            <th colspan="2">' + database[i].start + ' bis ' + database[i].end + '</th>\
+            <th colspan="2">' + database.entries[i].start + ' bis ' + database.entries[i].end + '</th>\
             <th colspan="2">Nr. ' + (i + 1) + '</th>\
           </tr>\
           <tr>\
@@ -665,9 +691,9 @@ app.get('/print', function(req, res) {
     var document = jsdom(fs.readFileSync(paths.html + 'print.html', 'utf-8')).defaultView.document;
 
     // Print config information
-    for (var key in config) {
+    for (var key in config.entries) {
       if (document.getElementById(key)) {
-        document.getElementById(key).innerHTML = config[key];
+        document.getElementById(key).innerHTML = config.entries[key];
       }
     }
 
@@ -679,8 +705,8 @@ app.get('/print', function(req, res) {
 
   // Send HTML file
   res.send(pageTemplate(
-    config.title,
-    config.subtitle,
+    config.entries.title,
+    config.entries.subtitle,
     pageContent(),
     '/')
   );
