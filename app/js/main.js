@@ -24,7 +24,7 @@
       <label class="form-input form-group__item form-group__item--20">Zeit\
         <input type="number" step="0.25" name="hours-' + i + '" class="form-input__field">\
       </label>\
-      <button class="form-work__button form-work__button--remove">-</button>';
+      <button type="button" class="form-work__button form-work__button--remove">-</button>';
 
     addButton[i].dataset.index = i;
   }

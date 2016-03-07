@@ -234,7 +234,7 @@ function createWeekdaysHTML(work) {
 
         // Don't generate remove button HTML for first entry
         if (i > 0) {
-          removeButton = '<button class="form-work__button form-work__button--remove">-</button>';
+          removeButton = '<button type="button" class="form-work__button form-work__button--remove">-</button>';
         }
 
         html += '<div class="form-group form-work__input">\
@@ -267,7 +267,7 @@ function createWeekdaysHTML(work) {
     weekdaysHTML += '<div class="form-work">\
       <h3 class="form__subtitle">' + weekdays[i] + '</h3>\
       <div class="form-work__group">' + createWorkHTML(i) + '</div>\
-      <button class="form-work__button form-work__button--add">+</button>\
+      <button type="button" class="form-work__button form-work__button--add">+</button>\
     </div>'
   }
 
