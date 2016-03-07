@@ -57,26 +57,6 @@ var database = {
 };
 
 
-// Wrap database loading into a function
-// This way we can later use this function
-// to refresh the variable information
-var loadDatabase = function() {
-  config   = JSON.parse(fs.readFileSync(paths.config));
-  database = JSON.parse(fs.readFileSync(paths.database));
-
-  // Sort database by week
-  database.sort(function(a, b) {
-    var dateA = new Date(a.start);
-    var dateB = new Date(b.start);
-
-    return dateA - dateB;
-  });
-};
-
-// Initial database loading
-//loadDatabase();
-
-
 // Convert date to yyyy-mm-dd
 var convertDate = function(date) {
   var yyyy = date.getFullYear();
@@ -302,6 +282,9 @@ app.get('/new', function(req, res) {
   // Refresh database
   database.load();
 
+  // Refresh config
+  config.load();
+
   // Create page content
   var pageContent = function() {
     // Load template from disk
@@ -310,6 +293,7 @@ app.get('/new', function(req, res) {
     // Inject dates
     document.querySelector('[name="start"]').defaultValue = convertDate(thisWeek.monday());
     document.querySelector('[name="end"]').defaultValue = convertDate(thisWeek.friday());
+    document.querySelector('[name="department"]').defaultValue = config.entries.lastDepartment;
 
     // Check if current date has an entry
     var entryIndex;
@@ -362,6 +346,7 @@ app.get('/edit', function(req, res) {
     // Inject dates
     document.querySelector('[name="start"]').defaultValue = entry.start;
     document.querySelector('[name="end"]').defaultValue = entry.end;
+    document.querySelector('[name="department"]').defaultValue = entry.department;
 
     // Inject the weekdays form HTML
     document.getElementById('weekdays').innerHTML = createWeekdaysHTML(entry.work);
@@ -392,6 +377,9 @@ app.post('/save', function(req, res) {
   // Refresh database
   database.load();
 
+  // Refresh config
+  config.load();
+
   // Check if entry already exists
   var entryIndex;
   for (var i = 0; i < database.entries.length; i++) {
@@ -404,6 +392,7 @@ app.post('/save', function(req, res) {
   var entry = {
     "start": req.body.start,
     "end": req.body.end,
+    "department": req.body.department,
     "work": []
   };
 
@@ -459,7 +448,7 @@ app.post('/save', function(req, res) {
     // Create new database entry
     database.entries.push(entry);
 
-    // Write JSON config file to disk
+    // Write JSON database file to disk
     fs.writeFile(paths.database, database.export(), function(err) {
 
       // Output error if there is one
@@ -481,6 +470,12 @@ app.post('/save', function(req, res) {
         );
       }
     });
+
+    // Update config last department with entry department
+    config.entries.lastDepartment = entry.department;
+
+    // Write JSON config file to disk
+    fs.writeFileSync(paths.config, config.export());
   }
 });
 
@@ -494,7 +489,7 @@ app.post('/overwrite', function(req, res) {
   // Overwrite existing entry with tempEntry
   database.entries[tempEntryIndex] = tempEntry;
 
-  // Write JSON config file to disk
+  // Write JSON database file to disk
   fs.writeFile(paths.database, database.export(), function(err) {
 
     // Output error if there is one
@@ -516,6 +511,12 @@ app.post('/overwrite', function(req, res) {
       );
     }
   });
+
+  // Update config last department with entry department
+  config.entries.lastDepartment = tempEntry.department;
+
+  // Write JSON config file to disk
+  fs.writeFileSync(paths.config, config.export());
 });
 
 
@@ -545,6 +546,7 @@ app.get('/delete', function(req, res) {
     // Inject dates
     document.querySelector('[name="start"]').defaultValue = entry.start;
     document.querySelector('[name="end"]').defaultValue = entry.end;
+    document.querySelector('[name="department"]').defaultValue = entry.department;
 
     // Inject the weekdays form HTML
     document.getElementById('weekdays').innerHTML = createWeekdaysHTML(entry.work);
@@ -609,7 +611,7 @@ app.post('/confirm-delete', function(req, res) {
         'Eintrag gelöscht',
         'Der Eintrag wurde erfolgreich gelöscht.',
         '',
-        '/new')
+        '/print')
       );
     }
   });
@@ -660,7 +662,8 @@ app.get('/print', function(req, res) {
       <table class="table table--entry">\
         <thead>\
           <tr>\
-            <th colspan="2">' + database.entries[i].start + ' bis ' + database.entries[i].end + '</th>\
+            <th>' + database.entries[i].department + '</th>\
+            <th>' + database.entries[i].start + ' bis ' + database.entries[i].end + '</th>\
             <th colspan="2">Nr. ' + (i + 1) + '</th>\
           </tr>\
           <tr>\

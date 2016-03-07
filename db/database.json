@@ -1,6 +1,7 @@
 [{
 	"start": "2016-02-22",
 	"end": "2016-02-26",
+	"department": "Department",
 	"work": [{
 		"tasks": ["Monday Task 1", "Monday Task 2"],
 		"hours": [4, 4]
@@ -12,6 +13,7 @@
 {
 	"start": "2016-01-18",
 	"end": "2016-01-22",
+	"department": "Department",
 	"work": [{
 		"tasks": ["Monday Task 1"],
 		"hours": [4]
@@ -22,6 +24,7 @@
 }, {
 	"start": "2016-02-29",
 	"end": "2016-03-04",
+	"department": "Department",
 	"work": [{
 		"tasks": ["Monday Task 1", "Monday Task 2"],
 		"hours": [4, 4]
@@ -35,6 +38,7 @@
 }, {
 	"start": "2015-11-09",
 	"end": "2015-11-13",
+	"department": "Department",
 	"work": [{
 		"tasks": ["Monday Task 1", "Monday Task 2"],
 		"hours": [4, 4]
