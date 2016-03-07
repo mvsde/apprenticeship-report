@@ -410,10 +410,10 @@ app.post('/save', function(req, res) {
     if (hours === '') {
       hours = [0];
     } else if (typeof hours === 'string' && hours != '') {
-      hours = [parseInt(hours, 10)];
+      hours = [parseFloat(hours, 10)];
     } else if (Array.isArray(hours)) {
       for (var j = 0; j < hours.length; j++) {
-        hours[j] = parseInt(hours[j], 10);
+        hours[j] = parseFloat(hours[j], 10);
       }
     }
 
