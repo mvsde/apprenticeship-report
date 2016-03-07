@@ -160,7 +160,9 @@ app.get('/config', function(req, res) {
 
     // Inject settings as default input values
     for (var key in config.entries) {
-      document.querySelector('[name="' + key + '"]').defaultValue = config.entries[key];
+      if (document.querySelector('[name="' + key + '"]')) {
+        document.querySelector('[name="' + key + '"]').defaultValue = config.entries[key];
+      }
     }
 
     return document.documentElement.outerHTML;
