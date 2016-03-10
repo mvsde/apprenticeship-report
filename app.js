@@ -40,6 +40,7 @@ var config = {
   }
 };
 
+
 // Database
 var database = {
   entries: [],
@@ -73,32 +74,46 @@ var loadDatabase = function() {
   });
 };
 
-// Initial database loading
-//loadDatabase();
 
+var convertDate = {
+  // Add zeros to single digit months and days
+  addLeadingZeros: function(date) {
+    var date = new Date(date);
+    var yyyy = date.getFullYear();
+    var mm   = date.getMonth() + 1; //January is 0
+    var dd   = date.getDate();
 
-// Convert date to yyyy-mm-dd
-var convertDate = function(date) {
-  var yyyy = date.getFullYear();
-  var mm   = date.getMonth() + 1; //January is 0
-  var dd   = date.getDate();
+    // Add leading zero to month
+    if (mm < 10) {
+        mm = '0' + mm
+    }
 
-  // Add leading zero to month
-  if (mm < 10) {
-      mm = '0' + mm
+    // Add leading zero to day
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+
+    return [yyyy, mm, dd];
+  },
+
+  // Output yyyy-mm-dd
+  machine: function(date) {
+    var dateArray = this.addLeadingZeros(date);
+
+    return dateArray[0] + '-' + dateArray[1] + '-' + dateArray[2];
+  },
+
+  // Output dd.mm.yyyy
+  human: function(date) {
+    var dateArray = this.addLeadingZeros(date);
+
+    return dateArray[2] + '.' + dateArray[1] + '.' + dateArray[0];
   }
-
-  // Add leading zero to day
-  if (dd < 10) {
-      dd = '0' + dd;
-  }
-
-  return yyyy + '-' + mm + '-' + dd;
-};
+}
 
 
-// Get this week's monday and friday
 var thisWeek = {
+  // Get this week's Monday
   monday: function() {
     var date = new Date();
     var day = date.getDay() || 7;
@@ -109,6 +124,8 @@ var thisWeek = {
 
     return date;
   },
+
+  // Get this week's Friday
   friday: function() {
     var date = new Date();
     var day = date.getDay() || 7;
@@ -308,13 +325,13 @@ app.get('/new', function(req, res) {
     var document = jsdom(fs.readFileSync(paths.html + 'entry.html', 'utf-8')).defaultView.document;
 
     // Inject dates
-    document.querySelector('[name="start"]').defaultValue = convertDate(thisWeek.monday());
-    document.querySelector('[name="end"]').defaultValue = convertDate(thisWeek.friday());
+    document.querySelector('[name="start"]').defaultValue = convertDate.machine(thisWeek.monday());
+    document.querySelector('[name="end"]').defaultValue = convertDate.machine(thisWeek.friday());
 
     // Check if current date has an entry
     var entryIndex;
     for (var i = 0; i < database.entries.length; i++) {
-      if (database.entries[i].start === convertDate(thisWeek.monday())) {
+      if (database.entries[i].start === convertDate.machine(thisWeek.monday())) {
         entryIndex = i;
       }
     }
@@ -660,7 +677,7 @@ app.get('/print', function(req, res) {
       <table class="table table--entry">\
         <thead>\
           <tr>\
-            <th colspan="2">' + database.entries[i].start + ' bis ' + database.entries[i].end + '</th>\
+            <th colspan="2">' + convertDate.human(database.entries[i].start) + ' bis ' + convertDate.human(database.entries[i].end) + '</th>\
             <th colspan="2">Nr. ' + (i + 1) + '</th>\
           </tr>\
           <tr>\
@@ -693,7 +710,12 @@ app.get('/print', function(req, res) {
     // Print config information
     for (var key in config.entries) {
       if (document.getElementById(key)) {
-        document.getElementById(key).innerHTML = config.entries[key];
+        if (/^\d{4}-\d{2}-\d{2}$/.test(config.entries[key])) {
+          console.log('Test');
+          document.getElementById(key).innerHTML = convertDate.human(config.entries[key]);
+        } else {
+          document.getElementById(key).innerHTML = config.entries[key];
+        }
       }
     }
 
