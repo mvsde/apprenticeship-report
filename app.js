@@ -736,7 +736,6 @@ app.get('/print', function(req, res) {
     for (var key in config.entries) {
       if (document.getElementById(key)) {
         if (/^\d{4}-\d{2}-\d{2}$/.test(config.entries[key])) {
-          console.log('Test');
           document.getElementById(key).innerHTML = convertDate.human(config.entries[key]);
         } else {
           document.getElementById(key).innerHTML = config.entries[key];
