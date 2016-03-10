@@ -112,31 +112,37 @@ var convertDate = {
 }
 
 
-var thisWeek = {
-  // Get this week's Monday
-  monday: function() {
-    var date = new Date();
+var week = {
+  // Get week's Monday
+  monday: function(date) {
+    var date = new Date(date);
     var day = date.getDay() || 7;
 
     if (day !== 1) {
       date.setHours(-24 * (day - 1));
     }
 
-    return date;
+    return convertDate.machine(date);
   },
 
-  // Get this week's Friday
-  friday: function() {
-    var date = new Date();
+  // Get week's Friday
+  friday: function(date) {
+    var date = new Date(date);
     var day = date.getDay() || 7;
 
     if (day !== 5) {
       date.setHours(-24 * (day - 1) + 24 * 4);
     }
 
-    return date;
+    return convertDate.machine(date);
   }
 };
+
+
+var thisWeek = {
+  monday: week.monday(new Date()),
+  firday: week.friday(new Date())
+}
 
 
 
@@ -330,14 +336,13 @@ app.get('/new', function(req, res) {
     var document = jsdom(fs.readFileSync(paths.html + 'entry.html', 'utf-8')).defaultView.document;
 
     // Inject dates
-    document.querySelector('[name="start"]').defaultValue = convertDate.machine(thisWeek.monday());
-    document.querySelector('[name="end"]').defaultValue = convertDate.machine(thisWeek.friday());
+    document.querySelector('[name="start"]').defaultValue = convertDate.machine(thisWeek.monday);
     document.querySelector('[name="department"]').defaultValue = config.entries.lastDepartment;
 
     // Check if current date has an entry
     var entryIndex;
     for (var i = 0; i < database.entries.length; i++) {
-      if (database.entries[i].start === convertDate.machine(thisWeek.monday())) {
+      if (database.entries[i].start === convertDate.machine(thisWeek.monday)) {
         entryIndex = i;
       }
     }
@@ -384,7 +389,6 @@ app.get('/edit', function(req, res) {
 
     // Inject dates
     document.querySelector('[name="start"]').defaultValue = entry.start;
-    document.querySelector('[name="end"]').defaultValue = entry.end;
     document.querySelector('[name="department"]').defaultValue = entry.department;
 
     // Inject the weekdays form HTML
@@ -430,7 +434,7 @@ app.post('/save', function(req, res) {
   // Create entry skeleton
   var entry = {
     "start": req.body.start,
-    "end": req.body.end,
+    "end": week.friday(req.body.start),
     "department": req.body.department,
     "work": []
   };
@@ -584,7 +588,6 @@ app.get('/delete', function(req, res) {
 
     // Inject dates
     document.querySelector('[name="start"]').defaultValue = entry.start;
-    document.querySelector('[name="end"]').defaultValue = entry.end;
     document.querySelector('[name="department"]').defaultValue = entry.department;
 
     // Inject the weekdays form HTML
