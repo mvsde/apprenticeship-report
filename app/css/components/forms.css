@@ -151,6 +151,10 @@ button,
       flex-basis: 50%;
     }
 
+    .form-group__item--60 {
+      flex-basis: 60%;
+    }
+
     .form-group__item--80 {
       flex-basis: 80%;
     }

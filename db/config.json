@@ -10,6 +10,7 @@
   "job": "Musterjob",
   "company": "Musterfirma",
   "division": "Musterzweig",
+  "lastDepartment": "Musterabteilung",
   "start": "2014-08-01",
   "end": "2017-07-31",
   "signing": "2014-04-13",
