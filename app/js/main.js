@@ -8,10 +8,9 @@
   var removeButton = document.getElementsByClassName('form-work__button--remove');
 
 
-  // Set global variables
+  // Create entry weekday work input field template
   var formGroup = [];
   var formInput = [];
-
 
   for (var i = 0; i < addButton.length; i++) {
     formGroup[i] = addButton[i].previousElementSibling;
@@ -30,19 +29,21 @@
   }
 
 
-  var removeButtonEventListener = function() {
+  // Handle remove button clicking
+  var removeButtonEvent = function() {
     for (var i = 0; i < removeButton.length; i++) {
       removeButton[i].addEventListener('click', function(event) {
         event.preventDefault();
 
         // Remove parentNode
         this.parentNode.remove();
-      });
+      }, false);
     }
   };
-  removeButtonEventListener();
+  removeButtonEvent();
 
 
+  // Handle add button clicking
   for (var i = 0; i < addButton.length; i++) {
     addButton[i].addEventListener('click', function(event) {
       event.preventDefault();
@@ -53,7 +54,15 @@
       var nameWork = document.querySelectorAll('[name="task-' + this.dataset.index + '"]');
       nameWork[nameWork.length - 1].focus();
 
-      removeButtonEventListener();
-    });
+      removeButtonEvent();
+    }, false);
+  }
+
+
+  // Set focus to overwrite button
+  var overwriteButton = document.querySelector('[value="Überschreiben"]');
+
+  if (overwriteButton) {
+    overwriteButton.focus();
   }
 })();
