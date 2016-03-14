@@ -46,6 +46,7 @@ button,
   font-weight: 600;
   font-size: 1.2rem;
   text-transform: uppercase;
+  text-decoration: none;
   color: #000;
   border: 1px solid #666;
   background: none;
@@ -70,14 +71,6 @@ button,
     border-color: #000;
     outline-color: #000;
   }
-
-  button::before,
-  button::after,
-  .button::before,
-  .button::after {
-    display: none;
-  }
-
 
   .button--inline {
     display: inline-block;

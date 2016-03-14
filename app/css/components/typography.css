@@ -41,35 +41,3 @@ h6 {
   letter-spacing: 0.1em;
   color: #666;
 }
-
-
-
-
-/* Links */
-
-a {
-  position: relative;
-  color: rgb(50, 50, 200);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-  a:hover {
-    color: rgb(200, 50, 50);
-  }
-
-  a::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: 0;
-    padding-top: 4px;
-    transform: translateY(4px);
-    border-bottom: 1px solid currentColor;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-
-    a:hover::after {
-      transform: translateY(2px);
-    }
