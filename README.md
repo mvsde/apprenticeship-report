@@ -1,3 +1,29 @@
-# Apprenticeship Report
-Apprenticeship report framework based on HTML, CSS, JavaScript and JSON.
-Because [this](https://www.hk24.de/aus_und_weiterbildung/ausbildungsberatung/tipps_zur_ausbildung/ausbildungsnachweise/1154076) just doesn't work...
+# Berichtsheftdatenbank
+
+Verwaltung von Berichtsheften für die Berufsausbildung in Hamburg.
+
+Basierend auf der [Vorlage für tägliche Berichte](https://www.hk24.de/produktmarken/ausbildung-weiterbildung/ausbilder/ausbildungsnachweise/1154076#titleInText2) der Handelskammer Hamburg.
+
+
+## Systemvoraussetzungen
+
+* [Node.js mit npm](https://nodejs.org/)
+
+
+## Einrichtung
+
+* `npm install` ausführen
+
+
+## Benutzung
+
+* `node app.js` ausführen.
+* Alternativ eines der `start`-Skripte ausführen.
+* Ein Webserver wird geöffnet.
+* Startseite der Datenbankoberfläche wird im Standard-Webbrowser geöffnet.
+* Bedienung der Datenbankoberfläche über einen Webbrowser.
+
+
+## Speicherung der Daten
+
+* Alle Daten werden als JSON-Dateien im Ordner `db` gespeichert.
