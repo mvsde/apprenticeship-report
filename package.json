@@ -1,6 +1,6 @@
 {
   "name": "apprenticeship-report",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Apprenticeship report framework based on HTML, CSS, JavaScript and JSON.",
   "main": "app.js",
   "scripts": {
