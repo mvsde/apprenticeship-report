@@ -6,15 +6,22 @@
 // NODE MODULES
 // =============================================================================
 
+// Third-party
 const fs          = require('fs');
 const express     = require('express');
 const bodyParser  = require('body-parser');
 const jsdom       = require('jsdom').jsdom;
 const open        = require('open');
-const convertDate = require('./app/js/convertDate.js');
-const week        = require('./app/js/week.js');
-const database    = require('./app/js/database.js');
-const paths       = require('./app/js/paths.js');
+
+// Data
+const cover       = require('./app/data/cover.js');
+const database    = require('./app/data/database.js');
+const paths       = require('./app/data/paths.js');
+
+// Utilities
+const convertDate = require('./app/utilities/convertDate.js');
+const week        = require('./app/utilities/week.js');
+
 
 
 
@@ -25,19 +32,6 @@ const paths       = require('./app/js/paths.js');
 // Array of weekdays
 const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
 
-
-// Cover
-var cover = {
-  entries: {},
-
-  load: function() {
-    this.entries = JSON.parse(fs.readFileSync(paths.cover));
-  },
-
-  export: function() {
-    return JSON.stringify(this.entries, null, 2);
-  }
-};
 
 
 
