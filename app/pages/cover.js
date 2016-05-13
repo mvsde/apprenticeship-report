@@ -1,98 +1,29 @@
+const cover = require('../data/cover.js');
+
+var createForm = function() {
+  var coverData = cover.get();
+  var holder = '<form class="form" action="/config-saved" method="post">';
+
+  for (var key in coverData) {
+    if (coverData.hasOwnProperty(key)) {
+      if (coverData[key].heading) {
+        holder += coverData[key].heading;
+      }
+
+      holder += '<label class="form-input ' + coverData[key].classes + '">' + coverData[key].label + '\
+        <span class="form-input__note">' + coverData[key].description + '</span>\
+        <input type="' + coverData[key].type + '" name="' + key + '" class="form-input__field" value="' + coverData[key].value + '">\
+      </label>'
+    }
+  }
+
+  holder += '<button>Speichern</button></form>';
+
+  return holder;
+};
+
 module.exports = {
   title: 'Cover',
-
-  header: '<h1>Cover</h1>\
-    <p class="subtitle">Cover mit Informationen über den Auszubildenden.</p>',
-
-  content: '<form class="form" action="/config-saved" method="post">\
-    <h2 class="form__title">Allgemein</h2>\
-\
-    <label class="form-input">Titel\
-      <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-      <input type="text" name="title" class="form-input__field">\
-    </label>\
-    <label class="form-input">Untertitel\
-      <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-      <input type="text" name="subtitle" class="form-input__field">\
-    </label>\
-\
-    <h2 class="form__title">Auszubildender</h2>\
-\
-    <h3 class="form__subtitle">Informationen</h3>\
-    <div class="form-group">\
-      <label class="form-input form-group__item form-group__item--50">Vorname\
-        <span class="form-input__note">Erscheint auf allen Seiten.</span>\
-        <input type="text" name="name" class="form-input__field">\
-      </label>\
-      <label class="form-input form-group__item form-group__item--50">Nachname\
-        <span class="form-input__note">Erscheint auf allen Seiten.</span>\
-        <input type="text" name="surname" class="form-input__field">\
-      </label>\
-    </div>\
-\
-    <div class="form-group">\
-      <label class="form-input form-group__item form-group__item--50">Geburtsort\
-        <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-        <input type="text" name="birthplace" class="form-input__field">\
-      </label>\
-      <label class="form-input form-group__item form-group__item--50">Geburtsdatum\
-        <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-        <input type="date" name="birthdate" class="form-input__field">\
-      </label>\
-    </div>\
-\
-    <div class="form-group">\
-      <label class="form-input form-group__item form-group__item--50">Straße\
-        <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-        <input type="text" name="street" class="form-input__field">\
-      </label>\
-      <label class="form-input form-group__item form-group__item--50">PLZ und Ort\
-        <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-        <input type="text" name="city" class="form-input__field">\
-      </label>\
-    </div>\
-\
-    <h3 class="form__subtitle">Informationen zum Ausbildungsberuf</h3>\
-    <label class="form-input">Ausbildungsberuf\
-      <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-      <input type="text" name="job" class="form-input__field">\
-    </label>\
-\
-    <div class="form-group">\
-      <label class="form-input form-group__item form-group__item--50">Ausbildungsfirma\
-        <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-        <input type="text" name="company" class="form-input__field">\
-      </label>\
-      <label class="form-input form-group__item form-group__item--50">Geschäftszweig\
-        <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-        <input type="text" name="division" class="form-input__field">\
-      </label>\
-    </div>\
-\
-    <h3 class="form__subtitle">Vertragliche Ausbildungszeit</h3>\
-    <div class="form-group">\
-      <label class="form-input form-group__item form-group__item--30">Beginn\
-        <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-        <input type="date" name="start" class="form-input__field">\
-      </label>\
-      <label class="form-input form-group__item form-group__item--30">Ende\
-        <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-        <input type="date" name="end" class="form-input__field">\
-      </label>\
-    </div>\
-\
-    <h3 class="form__subtitle">Informationen zum Ausbildungsvertrag</h3>\
-    <div class="form-group">\
-      <label class="form-input form-group__item form-group__item--30">Vertrag abgeschlossen\
-        <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-        <input type="date" name="signing" class="form-input__field">\
-      </label>\
-      <label class="form-input form-group__item form-group__item--30">Eingetragen in das Verzeichnis der Berufsausbildungsverhältnisse der IHK\
-        <span class="form-input__note">Erscheint auf der Titelseite.</span>\
-        <input type="date" name="registration" class="form-input__field">\
-      </label>\
-    </div>\
-\
-    <button>Speichern</button>\
-  </form>'
+  header: '<h1>Cover</h1><p class="subtitle">Cover mit Informationen über den Auszubildenden.</p>',
+  content: createForm()
 };

@@ -137,24 +137,26 @@ button,
       padding-right: 15px;
     }
 
-    .form-group__item--20 {
-      flex-basis: 20%;
+    .form-input--20 {
+      width: 20%;
     }
 
-    .form-group__item--30 {
-      flex-basis: 30%;
+    .form-input--30 {
+      width: 30%;
+      float: left;
     }
 
-    .form-group__item--50 {
-      flex-basis: 50%;
+    .form-input--50 {
+      width: 50%;
+      float: left;
     }
 
-    .form-group__item--60 {
-      flex-basis: 60%;
+    .form-input--60 {
+      width: 60%;
     }
 
-    .form-group__item--80 {
-      flex-basis: 80%;
+    .form-input--80 {
+      width: 80%;
     }
 }
 

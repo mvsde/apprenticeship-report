@@ -2,12 +2,9 @@ const fs = require('fs');
 const paths = require('./paths.js');
 
 module.exports = {
-  // Cover holder variable
-  entries: {},
-
   // Load cover
-  load: function() {
-    this.entries = JSON.parse(fs.readFileSync(paths.cover));
+  get: function() {
+    return JSON.parse(fs.readFileSync(paths.cover));
   },
 
   // Export cover to JSON format

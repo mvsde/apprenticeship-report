@@ -1,24 +1,108 @@
 {
   "title": {
+    "heading": "<h2 class=\"form__title\">Allgemein</h2>",
     "label": "Titel",
     "description": "Erscheint auf der Titelseite",
-    "input": "text",
-    "classes": "",
+    "type": "text",
     "value": "Berichtsheft"
   },
-  "subtitle": "Ausbildungsnachweis für die Berufsausbildung (Tägliche Berichte)",
-  "name": "Max",
-  "surname": "Mustermann",
-  "birthplace": "Musterstadt",
-  "birthdate": "1998-02-26",
-  "street": "Musterstraße 1a",
-  "city": "Musterstadt",
-  "job": "Musterjob",
-  "company": "Musterfirma",
-  "division": "Musterzweig",
-  "lastDepartment": "Musterabteilung",
-  "start": "2014-08-01",
-  "end": "2017-07-31",
-  "signing": "2014-04-13",
-  "registration": "2014-04-22"
+  "subtitle": {
+    "label": "Untertitel",
+    "description": "Erscheint auf der Titelseite",
+    "type": "text",
+    "value": "Ausbildungsnachweis für die Berufsausbildung (Tägliche Berichte)"
+  },
+  "name": {
+    "heading": "<h2 class=\"form__title\">Auszubildender</h2>",
+    "label": "Vorname",
+    "description": "Erscheint auf allen Seiten",
+    "type": "text",
+    "classes": "form-input--50",
+    "value": "Max"
+  },
+  "surname": {
+    "label": "Nachname",
+    "description": "Erscheint auf allen Seiten",
+    "type": "text",
+    "classes": "form-input--50",
+    "value": "Mustermann"
+  },
+  "birthplace": {
+    "label": "Geburtsort",
+    "description": "Erscheint auf der Titelseite",
+    "type": "text",
+    "classes": "form-input--50",
+    "value": "Musterstadt"
+  },
+  "birthplace": {
+    "label": "Geburtsdatum",
+    "description": "Erscheint auf der Titelseite",
+    "type": "date",
+    "classes": "form-input--50",
+    "value": "1998-02-26"
+  },
+  "street": {
+    "label": "Straße",
+    "description": "Erscheint auf der Titelseite",
+    "type": "text",
+    "classes": "form-input--50",
+    "value": "Musterstraße 1a"
+  },
+  "city": {
+    "label": "Wohnort",
+    "description": "Erscheint auf der Titelseite",
+    "type": "text",
+    "classes": "form-input--50",
+    "value": "Musterstadt"
+  },
+  "job": {
+    "heading": "<h2 class=\"form_title\">Informationen zum Ausbildungsberuf</h2>",
+    "label": "Ausbildungsberuf",
+    "description": "Erscheint auf der Titelseite",
+    "type": "text",
+    "value": "Musterberuf"
+  },
+  "company": {
+    "label": "Ausbildungsfirma",
+    "description": "Erscheint auf der Titelseite",
+    "type": "text",
+    "classes": "form-input--50",
+    "value": "Geschäftszweig"
+  },
+  "division": {
+    "label": "Geschäftszweig",
+    "description": "Erscheint auf der Titelseite",
+    "type": "text",
+    "classes": "form-input--50",
+    "value": "Musterzweig"
+  },
+  "start": {
+    "heading": "<h2 class=\"form__title\">Ausbildungszeit</h2>",
+    "label": "Beginn",
+    "description": "Erscheint auf der Titelseite",
+    "type": "date",
+    "classes": "form-input--30",
+    "value": "2014-08-01"
+  },
+  "end": {
+    "label": "Ende",
+    "description": "Erscheint auf der Titelseite",
+    "type": "text",
+    "classes": "form-input--30",
+    "value": "2017-07-31"
+  },
+  "signing": {
+    "label": "Vertrag abgeschlossen",
+    "description": "Erscheint auf der Titelseite",
+    "type": "date",
+    "classes": "form-input--30",
+    "value": "2014-04-13"
+  },
+  "registration": {
+    "label": "Eingetragen in das Verzeichnis der Berufsausbildungsverhältnisse der IHK",
+    "description": "Erscheint auf der Titelseite",
+    "type": "date",
+    "classes": "form-input--30",
+    "value": "2014-04-22"
+  }
 }

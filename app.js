@@ -85,25 +85,6 @@ app.get('/', function(req, res) {
 // =============================================================================
 
 app.get('/cover', function(req, res) {
-  // Refresh cover
-  cover.load();
-
-  // Create page content
-  var pageContent = function() {
-    // Load template from disk
-    var document = jsdom(fs.readFileSync(paths.html + 'cover.html', 'utf-8')).defaultView.document;
-
-    // Inject settings as default input values
-    for (var key in cover.entries) {
-      if (document.querySelector('[name="' + key + '"]')) {
-        document.querySelector('[name="' + key + '"]').defaultValue = cover.entries[key];
-      }
-    }
-
-    return document.documentElement.outerHTML;
-  };
-
-  // Send HTML file
   res.send(html.frame(coverPage.title, coverPage.header, coverPage.content));
 });
 
