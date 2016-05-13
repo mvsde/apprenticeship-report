@@ -6,144 +6,38 @@
 // NODE MODULES
 // =============================================================================
 
-const fs         = require('fs');
-const express    = require('express');
-const bodyParser = require('body-parser');
-const jsdom      = require('jsdom').jsdom;
-const open       = require('open');
-
+const fs          = require('fs');
+const express     = require('express');
+const bodyParser  = require('body-parser');
+const jsdom       = require('jsdom').jsdom;
+const open        = require('open');
+const convertDate = require('./app/js/convertDate.js');
+const week        = require('./app/js/week.js');
+const database    = require('./app/js/database.js');
+const paths       = require('./app/js/paths.js');
 
 
 
 // SETTINGS
 // =============================================================================
 
-const paths = {
-  config:   './db/config.json',
-  database: './db/database.json',
-  html:     './html/'
-}
-
 
 // Array of weekdays
 const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
 
 
-// Config
-var config = {
+// Cover
+var cover = {
   entries: {},
+
   load: function() {
-    this.entries = JSON.parse(fs.readFileSync(paths.config));
+    this.entries = JSON.parse(fs.readFileSync(paths.cover));
   },
+
   export: function() {
     return JSON.stringify(this.entries, null, 2);
   }
 };
-
-
-// Database
-var database = {
-  entries: [],
-  load: function() {
-    this.entries = JSON.parse(fs.readFileSync(paths.database));
-    this.entries.sort(function(a, b) {
-      var dateA = new Date(a.start);
-      var dateB = new Date(b.start);
-      return dateA - dateB;
-    });
-  },
-  export: function() {
-    return JSON.stringify(this.entries, null, 2);
-  }
-};
-
-
-// Wrap database loading into a function
-// This way we can later use this function
-// to refresh the variable information
-var loadDatabase = function() {
-  config   = JSON.parse(fs.readFileSync(paths.config));
-  database = JSON.parse(fs.readFileSync(paths.database));
-
-  // Sort database by week
-  database.sort(function(a, b) {
-    var dateA = new Date(a.start);
-    var dateB = new Date(b.start);
-
-    return dateA - dateB;
-  });
-};
-
-
-var convertDate = {
-  // Add zeros to single digit months and days
-  addLeadingZeros: function(date) {
-    var date = new Date(date);
-    var yyyy = date.getFullYear();
-    var mm   = date.getMonth() + 1; //January is 0
-    var dd   = date.getDate();
-
-    // Add leading zero to month
-    if (mm < 10) {
-        mm = '0' + mm
-    }
-
-    // Add leading zero to day
-    if (dd < 10) {
-        dd = '0' + dd;
-    }
-
-    return [yyyy, mm, dd];
-  },
-
-  // Output yyyy-mm-dd
-  machine: function(date) {
-    var dateArray = this.addLeadingZeros(date);
-
-    return dateArray[0] + '-' + dateArray[1] + '-' + dateArray[2];
-  },
-
-  // Output dd.mm.yyyy
-  human: function(date) {
-    var dateArray = this.addLeadingZeros(date);
-
-    return dateArray[2] + '.' + dateArray[1] + '.' + dateArray[0];
-  }
-}
-
-
-var week = {
-  // Get week's Monday
-  monday: function(date) {
-    var date = new Date(date);
-    var day = date.getDay() || 7;
-
-    if (day !== 1) {
-      date.setHours(-24 * (day - 1));
-    }
-
-    return convertDate.machine(date);
-  },
-
-  // Get week's Friday
-  friday: function(date) {
-    var date = new Date(date);
-    var day = date.getDay() || 7;
-
-    if (day !== 5) {
-      date.setHours(-24 * (day - 1) + 24 * 4);
-    }
-
-    return convertDate.machine(date);
-  }
-};
-
-
-var thisWeek = {
-  monday: week.monday(new Date()),
-  firday: week.friday(new Date())
-}
-
 
 
 
@@ -189,22 +83,22 @@ app.get('/', function(req, res) {
 
 
 
-// EDIT CONFIG
+// EDIT COVER
 // =============================================================================
 
-app.get('/config', function(req, res) {
-  // Refresh config
-  config.load();
+app.get('/cover', function(req, res) {
+  // Refresh cover
+  cover.load();
 
   // Create page content
   var pageContent = function() {
     // Load template from disk
-    var document = jsdom(fs.readFileSync(paths.html + 'config.html', 'utf-8')).defaultView.document;
+    var document = jsdom(fs.readFileSync(paths.html + 'cover.html', 'utf-8')).defaultView.document;
 
     // Inject settings as default input values
-    for (var key in config.entries) {
+    for (var key in cover.entries) {
       if (document.querySelector('[name="' + key + '"]')) {
-        document.querySelector('[name="' + key + '"]').defaultValue = config.entries[key];
+        document.querySelector('[name="' + key + '"]').defaultValue = cover.entries[key];
       }
     }
 
@@ -213,8 +107,8 @@ app.get('/config', function(req, res) {
 
   // Send HTML file
   res.send(pageTemplate(
-    'Einstellungen',
-    'Allgemeine Einstellungen und Informationen über den Auszubildenden.',
+    'Cover',
+    'Cover mit Informationen über den Auszubildenden.',
     pageContent(),
     '/')
   );
@@ -223,26 +117,26 @@ app.get('/config', function(req, res) {
 
 
 
-// SAVE CONFIG
+// SAVE COVER
 // =============================================================================
 
-app.post('/config-saved', function(req, res) {
+app.post('/cover-saved', function(req, res) {
 
-  // Update config JSON
+  // Update cover JSON
   for (var key in req.body) {
     if (req.body[key]) {
-      config.entries[key] = req.body[key];
+      cover.entries[key] = req.body[key];
     }
   }
 
-  // Write JSON config file to disk
-  fs.writeFile(paths.config, config.export(), function(err) {
+  // Write JSON cover file to disk
+  fs.writeFile(paths.cover, cover.export(), function(err) {
 
     // Output error if there is one
     if (err) {
       res.send(pageTemplate(
         'Fehler',
-        'Die Einstellungen konnten nicht gespeichert werden.',
+        'Das Cover konnte nicht gespeichert werden.',
         err,
         'javascript:history.back()')
       );
@@ -250,10 +144,10 @@ app.post('/config-saved', function(req, res) {
     // Output success message
     } else {
       res.send(pageTemplate(
-        'Einstellungen gespeichert',
-        'Die Einstellungen wurden erfolgreich gespeichert.',
+        'Cover gespeichert',
+        'Das Cover wurde erfolgreich gespeichert.',
         '',
-        '/config')
+        '/cover')
       );
     }
   });
@@ -327,8 +221,8 @@ app.get('/new', function(req, res) {
   // Refresh database
   database.load();
 
-  // Refresh config
-  config.load();
+  // Refresh cover
+  cover.load();
 
   // Create page content
   var pageContent = function() {
@@ -336,13 +230,13 @@ app.get('/new', function(req, res) {
     var document = jsdom(fs.readFileSync(paths.html + 'entry.html', 'utf-8')).defaultView.document;
 
     // Inject dates
-    document.querySelector('[name="start"]').defaultValue = convertDate.machine(thisWeek.monday);
-    document.querySelector('[name="department"]').defaultValue = config.entries.lastDepartment;
+    document.querySelector('[name="start"]').defaultValue = convertDate.machine(week.currentWeek.monday);
+    document.querySelector('[name="department"]').defaultValue = cover.entries.lastDepartment;
 
     // Check if current date has an entry
     var entryIndex;
     for (var i = 0; i < database.entries.length; i++) {
-      if (database.entries[i].start === convertDate.machine(thisWeek.monday)) {
+      if (database.entries[i].start === convertDate.machine(week.currentWeek.monday)) {
         entryIndex = i;
       }
     }
@@ -420,8 +314,8 @@ app.post('/save', function(req, res) {
   // Refresh database
   database.load();
 
-  // Refresh config
-  config.load();
+  // Refresh cover
+  cover.load();
 
   // Check if entry already exists
   var entryIndex;
@@ -514,11 +408,11 @@ app.post('/save', function(req, res) {
       }
     });
 
-    // Update config last department with entry department
-    config.entries.lastDepartment = entry.department;
+    // Update cover last department with entry department
+    cover.entries.lastDepartment = entry.department;
 
-    // Write JSON config file to disk
-    fs.writeFileSync(paths.config, config.export());
+    // Write JSON cover file to disk
+    fs.writeFileSync(paths.cover, cover.export());
   }
 });
 
@@ -555,11 +449,11 @@ app.post('/overwrite', function(req, res) {
     }
   });
 
-  // Update config last department with entry department
-  config.entries.lastDepartment = tempEntry.department;
+  // Update cover last department with entry department
+  cover.entries.lastDepartment = tempEntry.department;
 
-  // Write JSON config file to disk
-  fs.writeFileSync(paths.config, config.export());
+  // Write JSON cover file to disk
+  fs.writeFileSync(paths.cover, cover.export());
 });
 
 
@@ -635,7 +529,7 @@ app.post('/confirm-delete', function(req, res) {
   // Remove database entry
   database.entries.splice(tempEntryDelete, 1);
 
-  // Write JSON config file to disk
+  // Write JSON cover file to disk
   fs.writeFile(paths.database, database.export(), function(err) {
 
     // Output error if there is one
@@ -666,8 +560,8 @@ app.post('/confirm-delete', function(req, res) {
 // =============================================================================
 
 app.get('/print', function(req, res) {
-  // Refresh config
-  config.load();
+  // Refresh cover
+  cover.load();
 
   // Refresh database
   database.load();
@@ -735,13 +629,13 @@ app.get('/print', function(req, res) {
     // Load template from disk
     var document = jsdom(fs.readFileSync(paths.html + 'print.html', 'utf-8')).defaultView.document;
 
-    // Print config information
-    for (var key in config.entries) {
+    // Print cover information
+    for (var key in cover.entries) {
       if (document.getElementById(key)) {
-        if (/^\d{4}-\d{2}-\d{2}$/.test(config.entries[key])) {
-          document.getElementById(key).innerHTML = convertDate.human(config.entries[key]);
+        if (/^\d{4}-\d{2}-\d{2}$/.test(cover.entries[key])) {
+          document.getElementById(key).innerHTML = convertDate.human(cover.entries[key]);
         } else {
-          document.getElementById(key).innerHTML = config.entries[key];
+          document.getElementById(key).innerHTML = cover.entries[key];
         }
       }
     }
@@ -754,8 +648,8 @@ app.get('/print', function(req, res) {
 
   // Send HTML file
   res.send(pageTemplate(
-    config.entries.title,
-    config.entries.subtitle,
+    cover.entries.title,
+    cover.entries.subtitle,
     pageContent(),
     '/')
   );
