@@ -21,6 +21,10 @@ const paths       = require('./app/data/paths.js');
 // Utilities
 const convertDate = require('./app/utilities/convertDate.js');
 const week        = require('./app/utilities/week.js');
+const html        = require('./app/utilities/html.js');
+
+// Pages
+const indexHTML   = require('./app/pages/index.js');
 
 
 
@@ -62,7 +66,7 @@ function pageTemplate(title, subtitle, content, back) {
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(__dirname + '/app'));
+app.use(express.static(__dirname + '/app/static'));
 
 
 
@@ -71,7 +75,7 @@ app.use(express.static(__dirname + '/app'));
 // =============================================================================
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/html/index.html');
+  res.send(html.frame(indexHTML.title, indexHTML.header, indexHTML.content));
 });
 
 
