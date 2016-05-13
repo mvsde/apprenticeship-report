@@ -2,7 +2,6 @@
 
 
 
-
 // NODE MODULES
 // =============================================================================
 
@@ -14,17 +13,18 @@ const jsdom       = require('jsdom').jsdom;
 const open        = require('open');
 
 // Data
+const paths       = require('./app/data/paths.js');
 const cover       = require('./app/data/cover.js');
 const database    = require('./app/data/database.js');
-const paths       = require('./app/data/paths.js');
 
 // Utilities
+const html        = require('./app/utilities/html.js');
 const convertDate = require('./app/utilities/convertDate.js');
 const week        = require('./app/utilities/week.js');
-const html        = require('./app/utilities/html.js');
 
 // Pages
-const indexHTML   = require('./app/pages/index.js');
+const indexPage   = require('./app/pages/index.js');
+const coverPage   = require('./app/pages/cover.js');
 
 
 
@@ -75,7 +75,7 @@ app.use(express.static(__dirname + '/app/static'));
 // =============================================================================
 
 app.get('/', function(req, res) {
-  res.send(html.frame(indexHTML.title, indexHTML.header, indexHTML.content));
+  res.send(html.frame(indexPage.title, indexPage.header, indexPage.content));
 });
 
 
@@ -104,12 +104,7 @@ app.get('/cover', function(req, res) {
   };
 
   // Send HTML file
-  res.send(pageTemplate(
-    'Cover',
-    'Cover mit Informationen über den Auszubildenden.',
-    pageContent(),
-    '/')
-  );
+  res.send(html.frame(coverPage.title, coverPage.header, coverPage.content));
 });
 
 

@@ -1,5 +1,11 @@
 {
-  "title": "Berichtsheft",
+  "title": {
+    "label": "Titel",
+    "description": "Erscheint auf der Titelseite",
+    "input": "text",
+    "classes": "",
+    "value": "Berichtsheft"
+  },
   "subtitle": "Ausbildungsnachweis für die Berufsausbildung (Tägliche Berichte)",
   "name": "Max",
   "surname": "Mustermann",
