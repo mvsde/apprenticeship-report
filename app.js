@@ -94,37 +94,14 @@ app.get('/cover', function(req, res) {
 // SAVE COVER
 // =============================================================================
 
-app.post('/cover-saved', function(req, res) {
+app.post('/save-cover', function(req, res) {
+  // Update cover
+  var coverDB = cover.update(req.body, 'form');
 
-  // Update cover JSON
-  for (var key in req.body) {
-    if (req.body[key]) {
-      cover.entries[key] = req.body[key];
-    }
-  }
+  console.log(JSON.stringify(coverDB, null, 2));
 
-  // Write JSON cover file to disk
-  fs.writeFile(paths.cover, cover.export(), function(err) {
-
-    // Output error if there is one
-    if (err) {
-      res.send(pageTemplate(
-        'Fehler',
-        'Das Cover konnte nicht gespeichert werden.',
-        err,
-        'javascript:history.back()')
-      );
-
-    // Output success message
-    } else {
-      res.send(pageTemplate(
-        'Cover gespeichert',
-        'Das Cover wurde erfolgreich gespeichert.',
-        '',
-        '/cover')
-      );
-    }
-  });
+  // Save cover
+  res.send(cover.save(coverDB));
 });
 
 

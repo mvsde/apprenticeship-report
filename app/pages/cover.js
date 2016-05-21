@@ -1,22 +1,30 @@
-const cover = require('../data/cover.js');
+var cover = require('../data/cover.js');
 
 var createForm = function() {
-  var coverData = cover.get();
-  var holder = '<form class="form" action="/config-saved" method="post">';
+  var coverDB = cover.load();
 
-  for (var key in coverData) {
-    if (coverData.hasOwnProperty(key)) {
-      if (coverData[key].heading) {
-        holder += coverData[key].heading;
+  // HTML frame
+  var holder = '<form class="form form--group" action="/save-cover" method="post">';
+
+  for (var key in coverDB) {
+    if (coverDB.hasOwnProperty(key)) {
+      var coverDBItem = coverDB[key];
+
+      // Heading
+      if (coverDBItem.category === 'heading') {
+        holder += '<' + coverDBItem.type + ' class="form-group__item form-group__item--100">' + coverDBItem.content + '</' + coverDBItem.type + '>';
+
+      // Input
+    } else if (coverDBItem.category === 'input') {
+        holder += '<label class="form-input form-group__item form-group__item--' + coverDBItem.width + '">' + coverDBItem.label + '\
+          <span class="form-input__note">' + coverDBItem.description + '</span>\
+          <input type="' + coverDBItem.type + '" name="' + key + '" class="form-input__field" value="' + coverDBItem.value + '">\
+        </label>'
       }
-
-      holder += '<label class="form-input ' + coverData[key].classes + '">' + coverData[key].label + '\
-        <span class="form-input__note">' + coverData[key].description + '</span>\
-        <input type="' + coverData[key].type + '" name="' + key + '" class="form-input__field" value="' + coverData[key].value + '">\
-      </label>'
     }
   }
 
+  // HTML frame
   holder += '<button>Speichern</button></form>';
 
   return holder;

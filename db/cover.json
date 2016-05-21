@@ -1,108 +1,147 @@
 {
+  "h-general": {
+    "category": "heading",
+    "type": "h2",
+    "content": "Allgemein"
+  },
   "title": {
-    "heading": "<h2 class=\"form__title\">Allgemein</h2>",
+    "category": "input",
+    "type": "text",
+    "width": "100",
     "label": "Titel",
     "description": "Erscheint auf der Titelseite",
-    "type": "text",
     "value": "Berichtsheft"
   },
   "subtitle": {
+    "category": "input",
+    "type": "text",
+    "width": "100",
     "label": "Untertitel",
     "description": "Erscheint auf der Titelseite",
-    "type": "text",
     "value": "Ausbildungsnachweis für die Berufsausbildung (Tägliche Berichte)"
   },
+  "h-apprentice": {
+    "category": "heading",
+    "type": "h2",
+    "content": "Auszubildender"
+  },
   "name": {
-    "heading": "<h2 class=\"form__title\">Auszubildender</h2>",
+    "category": "input",
+    "type": "text",
+    "width": "50",
     "label": "Vorname",
     "description": "Erscheint auf allen Seiten",
-    "type": "text",
-    "classes": "form-input--50",
     "value": "Max"
   },
   "surname": {
+    "category": "input",
+    "type": "text",
+    "width": "50",
     "label": "Nachname",
     "description": "Erscheint auf allen Seiten",
-    "type": "text",
-    "classes": "form-input--50",
     "value": "Mustermann"
   },
   "birthplace": {
+    "category": "input",
+    "type": "text",
+    "width": "50",
     "label": "Geburtsort",
     "description": "Erscheint auf der Titelseite",
-    "type": "text",
-    "classes": "form-input--50",
     "value": "Musterstadt"
   },
-  "birthplace": {
+  "birthdate": {
+    "category": "input",
+    "type": "date",
+    "width": "50",
     "label": "Geburtsdatum",
     "description": "Erscheint auf der Titelseite",
-    "type": "date",
-    "classes": "form-input--50",
     "value": "1998-02-26"
   },
   "street": {
+    "category": "input",
+    "type": "text",
+    "width": "50",
     "label": "Straße",
     "description": "Erscheint auf der Titelseite",
-    "type": "text",
-    "classes": "form-input--50",
     "value": "Musterstraße 1a"
   },
   "city": {
+    "category": "input",
+    "type": "text",
+    "width": "50",
     "label": "Wohnort",
     "description": "Erscheint auf der Titelseite",
-    "type": "text",
-    "classes": "form-input--50",
     "value": "Musterstadt"
   },
+  "h-apprentice-job": {
+    "category": "heading",
+    "type": "h3",
+    "content": "Informationen zum Ausbildungsberuf"
+  },
   "job": {
-    "heading": "<h2 class=\"form_title\">Informationen zum Ausbildungsberuf</h2>",
+    "category": "input",
+    "type": "text",
+    "width": "100",
     "label": "Ausbildungsberuf",
     "description": "Erscheint auf der Titelseite",
-    "type": "text",
     "value": "Musterberuf"
   },
   "company": {
+    "category": "input",
+    "type": "text",
+    "width": "50",
     "label": "Ausbildungsfirma",
     "description": "Erscheint auf der Titelseite",
-    "type": "text",
-    "classes": "form-input--50",
     "value": "Geschäftszweig"
   },
   "division": {
+    "category": "input",
+    "type": "text",
+    "width": "50",
     "label": "Geschäftszweig",
     "description": "Erscheint auf der Titelseite",
-    "type": "text",
-    "classes": "form-input--50",
     "value": "Musterzweig"
   },
+  "h-apprentice-contract-time": {
+    "category": "heading",
+    "type": "h3",
+    "content": "Vertragliche Ausbildungszeit"
+  },
   "start": {
-    "heading": "<h2 class=\"form__title\">Ausbildungszeit</h2>",
+    "category": "input",
+    "type": "date",
+    "width": "30",
     "label": "Beginn",
     "description": "Erscheint auf der Titelseite",
-    "type": "date",
-    "classes": "form-input--30",
     "value": "2014-08-01"
   },
   "end": {
+    "category": "input",
+    "type": "date",
+    "width": "30",
     "label": "Ende",
     "description": "Erscheint auf der Titelseite",
-    "type": "text",
-    "classes": "form-input--30",
     "value": "2017-07-31"
   },
+  "h-apprentice-contract-information": {
+    "category": "heading",
+    "type": "h3",
+    "content": "Informationen zum Ausbildungsvertrag"
+  },
   "signing": {
+    "category": "input",
+    "type": "date",
+    "width": "30",
     "label": "Vertrag abgeschlossen",
     "description": "Erscheint auf der Titelseite",
-    "type": "date",
-    "classes": "form-input--30",
     "value": "2014-04-13"
   },
   "registration": {
+    "category": "input",
+    "type": "date",
+    "width": "30",
     "label": "Eingetragen in das Verzeichnis der Berufsausbildungsverhältnisse der IHK",
     "description": "Erscheint auf der Titelseite",
-    "type": "date",
-    "classes": "form-input--30",
     "value": "2014-04-22"
   }
 }
