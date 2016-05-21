@@ -71,7 +71,7 @@ app.use(express.static(__dirname + '/app/static'));
 
 
 
-// INDEX.html
+// INDEX
 // =============================================================================
 
 app.get('/', function(req, res) {
@@ -98,10 +98,23 @@ app.post('/save-cover', function(req, res) {
   // Update cover
   var coverDB = cover.update(req.body, 'form');
 
-  console.log(JSON.stringify(coverDB, null, 2));
-
   // Save cover
-  res.send(cover.save(coverDB));
+  var coverSave = cover.save(coverDB);
+
+  // Send HTML
+  if (coverSave.status === 'error') {
+    res.send(html.frame(
+      'Fehler beim Speichern',
+      '<h1>Fehler beim Speichern</h1><p class="subtitle">Das Cover konnte nicht gespeichert werden.</p>',
+      coverSave.message
+    ));
+  } else {
+    res.send(html.frame(
+      'Cover gespeichert',
+      '<h1>Cover gespeichert</h1><p class="subtitle">Das Cover wurde erfolgreich gespeichert.</p>',
+      coverSave.message
+    ));
+  }
 });
 
 

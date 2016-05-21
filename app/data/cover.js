@@ -32,15 +32,15 @@ module.exports = {
   },
 
   // Save cover
-  save: function(data) {
-    fs.writeFile(paths.cover, JSON.stringify(data, null, 2), function(error) {
+
+  // IMPLEMENT: CALLBACK for correct error handling!
+  save: function(coverDB) {
+    fs.writeFile(paths.cover, JSON.stringify(coverDB, null, 2), function(error) {
       if (error) {
-        console.error(error);
-        return error;
       } else {
-        console.log('Success!');
-        return "Success";
       }
     });
+
+    return exitCode;
   }
 };
