@@ -99,8 +99,6 @@ app.post('/save-cover', function(req, res) {
   var coverDB = cover.update(req.body, 'form');
 
   // Save cover
-  //var coverSave = cover.save(coverDB);
-
   cover.save(coverDB, function(status, message) {
     if (status === 'error') {
       res.send(html.frame(
@@ -116,21 +114,6 @@ app.post('/save-cover', function(req, res) {
       ));
     }
   });
-
-  // Send HTML
-  /*if (coverSave.status === 'error') {
-    res.send(html.frame(
-      'Fehler beim Speichern',
-      '<h1>Fehler beim Speichern</h1><p class="subtitle">Das Cover konnte nicht gespeichert werden.</p>',
-      coverSave.message
-    ));
-  } else {
-    res.send(html.frame(
-      'Cover gespeichert',
-      '<h1>Cover gespeichert</h1><p class="subtitle">Das Cover wurde erfolgreich gespeichert.</p>',
-      coverSave.message
-    ));
-  }*/
 });
 
 
