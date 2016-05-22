@@ -17,9 +17,7 @@
   },
   "homepage": "https://github.com/mvsde/apprenticeship-report#readme",
   "dependencies": {
-    "body-parser": "^1.15.0",
     "express": "^4.13.4",
-    "jsdom": "^8.0.4",
     "open": "0.0.5"
   }
 }

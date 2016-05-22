@@ -1,6 +1,15 @@
+'use strict';
+
+
+
+// HTML FRAME
+// =============================================================================
+
 exports.frame = function(title, header, content) {
-  return '<!DOCTYPE html>\
-  <html><head>\
+  return '\
+  <!DOCTYPE html>\
+  <html>\
+    <head>\
       <meta charset="utf-8">\
       <meta name="viewport" content="width=device-width, minimum-scale=1.0">\
       <title>' + title + '</title>\
@@ -24,9 +33,31 @@ exports.frame = function(title, header, content) {
       <meta name="msapplication-TileColor" content="#ffffff">\
       <meta name="msapplication-TileImage" content="/mstile-144x144.png">\
       <meta name="theme-color" content="#ffffff">\
-    </head><body>\
+    </head>\
+    <body>\
       <header class="header">' + header + '</header>\
       <main class="content">' + content + '</main>\
       <script src="js/main.js"></script>\
-    </body></html>';
+    </body>\
+  </html>';
 };
+
+
+
+
+// HTML HEADER
+// =============================================================================
+
+exports.header = function(title, subtitle, backURL) {
+  return '\
+  <div class="button-group print-hidden">\
+    <a href="' + backURL + '" class="button button--inline" accesskey="b">< Zurück</a>\
+    <div class="button-group__right">\
+      <a href="/cover" class="button button--inline" accesskey="c">Cover</a>\
+      <a href="/new" class="button button--inline" accesskey="n">Eintrag erstellen</a>\
+      <a href="/print" class="button button--inline" accesskey="p">Berichtsheft drucken</a>\
+    </div>\
+  </div>\
+  <h1>' + title + '</h1>\
+  <p class="subtitle">' + subtitle + '</p>';
+}

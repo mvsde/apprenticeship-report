@@ -1,4 +1,17 @@
+'use strict';
+
+
+
+// NODE MODULES
+// =============================================================================
+
 var cover = require('../data/cover.js');
+
+
+
+
+// CREATE FORM
+// =============================================================================
 
 var createForm = function() {
   var coverDB = cover.load();
@@ -30,8 +43,15 @@ var createForm = function() {
   return holder;
 };
 
+
+
+
+// MODULE EXPORT
+// =============================================================================
+
 module.exports = {
   title: 'Cover',
-  header: '<h1>Cover</h1><p class="subtitle">Cover mit Informationen über den Auszubildenden.</p>',
-  content: createForm()
+  subtitle: 'Cover mit Informationen über den Auszubildenden',
+  content: createForm(),
+  backURL: '/'
 };

@@ -8,8 +8,6 @@
 // Third-party
 const fs          = require('fs');
 const express     = require('express');
-const bodyParser  = require('body-parser');
-const jsdom       = require('jsdom').jsdom;
 const open        = require('open');
 
 // Data
@@ -39,33 +37,10 @@ const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
 
 
 
-// PAGE TEMPLATE
-// =============================================================================
-
-function pageTemplate(title, subtitle, content, back) {
-  // Load template from disk
-  var htmlFile = fs.readFileSync(paths.html + 'scaffolding.html', 'utf-8');
-  var document = jsdom(htmlFile).defaultView.document;
-
-  // Inject dynamic content
-  document.title = 'Berichtsheftdatenbank | ' + title;
-  document.getElementById('title').innerHTML = title;
-  document.getElementById('subtitle').innerHTML = subtitle;
-  document.getElementById('content').innerHTML = content;
-  document.getElementById('back').href = back;
-
-  // Return HTML
-  return document.documentElement.outerHTML;
-}
-
-
-
-
 // LOAD EXPRESS
 // =============================================================================
 
 var app = express();
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/app/static'));
 
 
@@ -75,7 +50,11 @@ app.use(express.static(__dirname + '/app/static'));
 // =============================================================================
 
 app.get('/', function(req, res) {
-  res.send(html.frame(indexPage.title, indexPage.header, indexPage.content));
+  res.send(html.frame(
+    indexPage.title,
+    indexPage.header,
+    indexPage.content
+  ));
 });
 
 
@@ -85,7 +64,15 @@ app.get('/', function(req, res) {
 // =============================================================================
 
 app.get('/cover', function(req, res) {
-  res.send(html.frame(coverPage.title, coverPage.header, coverPage.content));
+  res.send(html.frame(
+    coverPage.title,
+    html.header(
+      coverPage.title,
+      coverPage.subtitle,
+      coverPage.backURL
+    ),
+    coverPage.content
+  ));
 });
 
 
