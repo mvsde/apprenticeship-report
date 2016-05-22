@@ -1,5 +1,18 @@
+'use strict';
+
+
+
+// NODE MODULES
+// =============================================================================
+
 const fs = require('fs');
 const paths = require('./paths.js');
+
+
+
+
+// COVER LOGIC
+// =============================================================================
 
 module.exports = {
   // Load cover
@@ -32,15 +45,12 @@ module.exports = {
   },
 
   // Save cover
-
-  // IMPLEMENT: CALLBACK for correct error handling!
-  save: function(coverDB) {
+  save: function(coverDB, errorCallback) {
     fs.writeFile(paths.cover, JSON.stringify(coverDB, null, 2), function(error) {
       if (error) {
-      } else {
+        return errorCallback('error', error);
       }
+      errorCallback('success', 'Test');
     });
-
-    return exitCode;
   }
 };
