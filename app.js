@@ -8,6 +8,7 @@
 // Third-party
 const fs          = require('fs');
 const express     = require('express');
+const bodyParser  = require('body-parser');
 const open        = require('open');
 
 // Data
@@ -27,21 +28,13 @@ const coverPage   = require('./app/pages/cover.js');
 
 
 
-// SETTINGS
-// =============================================================================
-
-
-// Array of weekdays
-const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
-
-
-
-
 // LOAD EXPRESS
 // =============================================================================
 
 var app = express();
 app.use(express.static(__dirname + '/app/static'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
@@ -83,7 +76,7 @@ app.get('/cover', function(req, res) {
 
 app.post('/save-cover', function(req, res) {
   // Update cover
-  var coverDB = cover.update(req.body, 'form');
+  var coverDB = cover.update(req.body, true);
 
   // Save cover
   cover.save(coverDB, function(status, message) {

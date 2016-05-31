@@ -38,7 +38,11 @@ var createForm = function() {
   }
 
   // HTML frame
-  holder += '<button>Speichern</button></form>';
+  holder += '\
+    <div class="form-group__item form-group__item--100">\
+      <button>Speichern</button>\
+    </div>\
+  </form>';
 
   return holder;
 };

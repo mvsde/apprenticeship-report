@@ -21,11 +21,11 @@ module.exports = {
   },
 
   // Update cover
-  update: function(data, type) {
+  update: function(data, formOnly) {
     var coverDB = this.load();
 
     // Update form
-    if (type === 'form') {
+    if (formOnly) {
       for (var key in data) {
         if (coverDB.hasOwnProperty(key)) {
           coverDB[key].value = data[key];
