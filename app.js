@@ -99,64 +99,6 @@ app.post('/save-cover', function(req, res) {
 
 
 
-// WEEKDAYS FORM HTML
-// =============================================================================
-
-function createWeekdaysHTML(work) {
-  var createWorkHTML = function(index) {
-    var html = '';
-
-    if (work && work[index]) {
-      for (var i = 0; i < work[index].tasks.length; i++) {
-
-        // Variable that holds the remove button HTML
-        var removeButton = '';
-
-        // Don't generate remove button HTML for first entry
-        if (i > 0) {
-          removeButton = '<button type="button" class="form-work__button form-work__button--remove">-</button>';
-        }
-
-        html += '<div class="form-group form-work__input">\
-          <label class="form-input form-group__item form-group__item--80">Beschreibung\
-            <input type="text" name="task-' + index + '" value="' + work[index].tasks[i] + '" class="form-input__field">\
-          </label>\
-          <label class="form-input form-group__item form-group__item--20">Zeit\
-            <input type="number" step="0.25" name="hours-' + index + '" value="' + work[index].hours[i] + '" class="form-input__field">\
-          </label>' + removeButton + '\
-        </div>';
-      }
-    } else {
-      html = '<div class="form-group form-work__input">\
-        <label class="form-input form-group__item form-group__item--80">Beschreibung\
-          <input type="text" name="task-' + index + '" class="form-input__field">\
-        </label>\
-        <label class="form-input form-group__item form-group__item--20">Zeit\
-          <input type="number" step="0.25" name="hours-' + index + '" class="form-input__field">\
-        </label>\
-      </div>';
-    }
-    return html;
-  }
-
-  // This variable holds all the weekdays HTML
-  var weekdaysHTML = '';
-
-  // Create the weekdays HTML
-  for (var i = 0; i < weekdays.length; i++) {
-    weekdaysHTML += '<div class="form-work">\
-      <h3 class="form__subtitle">' + weekdays[i] + '</h3>\
-      <div class="form-work__group">' + createWorkHTML(i) + '</div>\
-      <button type="button" class="form-work__button form-work__button--add">+</button>\
-    </div>'
-  }
-
-  return weekdaysHTML;
-}
-
-
-
-
 // NEW ENTRY
 // =============================================================================
 

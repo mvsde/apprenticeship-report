@@ -1,22 +1,39 @@
-const fs = require('fs');
+'use strict';
+
+
+
+// NODE MODULES
+// =============================================================================
+
+const fs    = require('fs');
 const paths = require('./paths.js');
 
-module.exports = {
-  // Database holder variable
-  entries: [],
 
+
+
+// DATABASE LOGIC
+// =============================================================================
+
+module.exports = {
   // Load and sort database
   load: function() {
-    this.entries = JSON.parse(fs.readFileSync(paths.database));
-    this.entries.sort(function(a, b) {
+    var database = JSON.parse(fs.readFileSync(paths.database));
+    database.sort(function(a, b) {
       var dateA = new Date(a.start);
       var dateB = new Date(b.start);
       return dateA - dateB;
     });
+
+    return database;
   },
 
-  // Export database to JSON format
-  export: function() {
-    return JSON.stringify(this.entries, null, 2);
+  // Update database
+  update: function(data) {
+
+  },
+
+  // Save database
+  save: function() {
+
   }
 };

@@ -5,7 +5,7 @@
 // NODE MODULES
 // =============================================================================
 
-const fs = require('fs');
+const fs    = require('fs');
 const paths = require('./paths.js');
 
 
